@@ -41,6 +41,8 @@ dependencies:
   flutter_riverpod: ^2.5.1
   flutter_secure_storage: ^9.0.0
   shared_preferences: ^2.2.3
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +56,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  hive_generator: ^2.0.1
+  build_runner: ^2.4.9
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -72,6 +76,10 @@ flutter:
     - assets/banners/tasks.jpg
     - assets/avatar.png
     - assets/icon/logo.png
+    - assets/icon/first.png
+    - assets/icon/second.png
+    - assets/icon/third.png
+    - assets/icon/more.png
 
 
   #   - images/a_dot_ham.jpeg

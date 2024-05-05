@@ -1,9 +1,9 @@
 import 'package:hive/hive.dart';
 
-part 'note.g.dart';
+part 'task.g.dart';
 
-@HiveType(typeId: 1)
-class Note extends HiveObject {
+@HiveType(typeId: 0)
+class Task extends HiveObject {
   @HiveField(0)
   String name;
 
@@ -13,9 +13,16 @@ class Note extends HiveObject {
   @HiveField(2)
   DateTime date;
 
-  Note({
+  @HiveField(3)
+  bool done;
+
+  @HiveField(4)
+  DateTime? completedDate;
+
+  Task({
     required this.name,
     required this.caption,
     required this.date,
+    this.done = false,
   });
 }

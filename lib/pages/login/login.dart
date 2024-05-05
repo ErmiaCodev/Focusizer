@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '/components/appbar/navbar.dart';
-import '/screens/home.dart';
+import '../home/home.dart';
 import '/store/auth.dart';
 
 class LoginPage extends StatefulWidget {

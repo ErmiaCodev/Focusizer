@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '/screens/guide/model.dart';
-import '/screens/guide/onboarding.dart';
+import '/pages/guide/model.dart';
+import '/pages/guide/onboarding.dart';
 
 class GuidePage extends StatelessWidget {
   const GuidePage({Key? key}) : super(key: key);

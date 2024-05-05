@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '/screens/guide/model.dart';
+import '/pages/guide/model.dart';
 
 class OnboardingPagePresenter extends StatefulWidget {
   final List<OnboardingPageModel> pages;

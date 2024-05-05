@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '/models/user.dart';
+import 'user.dart';
 
 class UserNotifier extends StateNotifier<User> {
   UserNotifier(super.state);
