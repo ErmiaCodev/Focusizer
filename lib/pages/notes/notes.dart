@@ -20,7 +20,7 @@ class NotesPage extends StatelessWidget {
           builder: (context, Box<Note> box, _) {
             if (box.values.isEmpty) {
               return const Center(
-                child: Text("!داده ای وجود ندارد", style: titleStyle),
+                child: Text("!یاداشتی ای وجود ندارد", style: titleStyle, textDirection: TextDirection.ltr,),
               );
             }
 
@@ -29,8 +29,11 @@ class NotesPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 Note note = box.values.elementAt(index);
                 return Card(
-                  child: Container(
+                  child: ElevatedButton(
                     child: Text("${note.name}"),
+                    onPressed: () {
+                      note.delete();
+                    },
                   ),
                 );
               },
