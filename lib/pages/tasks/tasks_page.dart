@@ -1,11 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:taskizer/components/appbar/navbar.dart';
-import 'package:taskizer/constants/db.dart';
-import 'package:taskizer/models/task.dart';
-import 'package:taskizer/pages/tasks/widgets/task_box.dart';
-import 'package:taskizer/styles/global.dart';
+import 'package:taskizer/pages/tasks/widgets/task_add_dialog.dart';
+import '/components/appbar/navbar.dart';
+import '/constants/db.dart';
+import '/models/task.dart';
+import '/pages/tasks/widgets/task_box.dart';
+import '/styles/global.dart';
 
 class TasksPage extends StatelessWidget {
   const TasksPage({super.key});
@@ -24,12 +24,7 @@ class TasksPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("تسک ها", style: titleStyle),
-                FloatingActionButton.small(
-                  backgroundColor: Colors.teal.shade300,
-                  foregroundColor: Colors.white,
-                  child: Icon(Icons.add),
-                  onPressed: () {},
-                )
+                TaskAddDialog(),
               ],
             ),
             SizedBox(height: 20),
@@ -44,7 +39,7 @@ class TasksPage extends StatelessWidget {
 
                 return Expanded(
                   child: ListView.builder(
-                    itemCount: 10,
+                    itemCount: box.values.length,
                     itemBuilder: (context, index) {
                       Task task = box.values.elementAt(index);
                       return TaskBox(task: task);

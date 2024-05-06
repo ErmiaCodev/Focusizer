@@ -22,7 +22,7 @@ class NoteItem extends StatelessWidget {
         child: Container(
           decoration: itemBoxStyle,
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

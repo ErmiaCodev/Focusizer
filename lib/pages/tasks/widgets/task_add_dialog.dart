@@ -1,58 +1,42 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:taskizer/models/note.dart';
+import 'package:hive/hive.dart';
+import 'package:taskizer/constants/db.dart';
+import 'package:taskizer/models/task.dart';
 import 'package:taskizer/styles/global.dart';
 
-class NoteSettingsDialog extends StatefulWidget {
-  NoteSettingsDialog({required this.note, super.key});
+class TaskAddDialog extends StatefulWidget {
+  TaskAddDialog({super.key});
 
-  final Note note;
-
-  @override
-  State<NoteSettingsDialog> createState() => _NoteSettingsDialog();
+  State<TaskAddDialog> createState() => _TaskAddDialog();
 }
 
 
-class _NoteSettingsDialog extends State<NoteSettingsDialog> {
-  String name = "";
+class _TaskAddDialog extends State<TaskAddDialog> {
+  String name   = "";
   String caption = "";
 
-
-  @override
-  void initState() {
-    name = widget.note.name;
-    caption = widget.note.caption;
-    super.initState();
-  }
-
-  void deleteNote(Note note) {
-    note.delete();
-  }
-
-  void updateNote(Note note) {
-    note.name = name;
-    note.caption = caption;
-    note.save();
+  void createNote() {
+    Box<Task> contactsBox = Hive.box<Task>(tasksBoxName);
+    contactsBox.add(Task(name: name, caption: caption, date: DateTime.now()));
   }
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.small(
-      child: Icon(Icons.settings),
+      child: Icon(Icons.add),
       backgroundColor: Colors.teal.shade300,
       foregroundColor: Colors.white,
       onPressed: () => showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: const Text('تنظیمات یاداشت'),
+          title: const Text('افزودن تسک'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextField(
-                controller: TextEditingController(text: widget.note.name),
                 decoration: const InputDecoration(
-                  hintText: "نام",
+                    hintText: "نام",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     )),
@@ -64,10 +48,9 @@ class _NoteSettingsDialog extends State<NoteSettingsDialog> {
               ),
               SizedBox(height: 20),
               TextField(
-                controller: TextEditingController(text: widget.note.caption),
                 maxLines: 6,
                 decoration: const InputDecoration(
-                  hintText: "توضیحات",
+                    hintText: "توضیحات",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     )),
@@ -81,20 +64,18 @@ class _NoteSettingsDialog extends State<NoteSettingsDialog> {
           ),
           actions: <Widget>[
             FloatingActionButton.extended(
-              backgroundColor: Colors.red.shade300,
-              foregroundColor: Colors.white,
+              backgroundColor: Colors.orange.shade300,
               onPressed: () {
                 Navigator.pop(context, 'Cancel');
-                deleteNote(widget.note);
               },
-              label: const Text('حذف', style: labelStyle),
+              label: const Text('انصراف', style: labelStyle),
             ),
             FloatingActionButton.extended(
               backgroundColor: Colors.teal.shade300,
               foregroundColor: Colors.white,
               onPressed: () {
                 Navigator.pop(context, 'OK');
-                updateNote(widget.note);
+                createNote();
               },
               label: const Text('ذخیره', style: labelStyle),
             ),
