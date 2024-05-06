@@ -8,7 +8,7 @@ final brandGradient = LinearGradient(
 
 
 const labelStyle = TextStyle(
-  fontSize: 18,
+  fontSize: 16,
   fontWeight: FontWeight.w700,
 );
 
@@ -17,4 +17,10 @@ const titleStyle = TextStyle(
   fontSize: 22,
   fontWeight: FontWeight.w700,
   // color: Colors.blueGrey.shade700,
+);
+
+final itemBoxStyle = BoxDecoration(
+    color: Colors.teal.shade50,
+    borderRadius: const BorderRadius.all(Radius.circular(15)),
+    border: Border.all(color: Colors.teal.shade200)
 );

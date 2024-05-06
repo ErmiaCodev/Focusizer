@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:taskizer/constants/db.dart';
 import 'package:taskizer/models/note.dart';
-import 'package:taskizer/pages/home/home.dart';
+import 'package:taskizer/pages/home/home_page.dart';
 import 'package:taskizer/styles/global.dart';
 
 class AddNote extends StatefulWidget {
@@ -58,7 +58,6 @@ class _AddTaskState extends State<AddNote> {
                   ),
                   SizedBox(height: 20),
                   TextFormField(
-                    keyboardType: TextInputType.number,
                     initialValue: "",
                     maxLines: 4,
                     decoration: const InputDecoration(

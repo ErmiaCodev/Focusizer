@@ -4,7 +4,7 @@ import '/pages/home/feature.dart';
 import '/components/appbar/navbar.dart';
 import '/components/card/card.dart';
 import '/components/guard/guard.dart';
-import '/pages/profile.dart';
+import '../profile/profile.dart';
 import '/store/auth.dart';
 import '/styles/global.dart';
 
@@ -53,8 +53,7 @@ class HomePage extends ConsumerWidget {
                         note: "کل تسک ها:",
                         timestamp: "هیچی",
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (builder) => ProfilePage()));
+                          Navigator.of(context).pushNamed('/tasks');
                         },
                       )),
                   Padding(

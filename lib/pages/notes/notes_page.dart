@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:taskizer/components/appbar/navbar.dart';
+import 'package:taskizer/components/guard/guard.dart';
 import 'package:taskizer/constants/db.dart';
 import 'package:taskizer/models/note.dart';
 import 'package:taskizer/models/task.dart';
+import 'package:taskizer/pages/notes/widgets/note_item.dart';
 import 'package:taskizer/styles/global.dart';
 
 class NotesPage extends StatelessWidget {
@@ -11,7 +13,8 @@ class NotesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Guard(
+        child: Scaffold(
       appBar: Navbar("یاداشت ها"),
       body: Padding(
         padding: EdgeInsets.all(20),
@@ -20,7 +23,11 @@ class NotesPage extends StatelessWidget {
           builder: (context, Box<Note> box, _) {
             if (box.values.isEmpty) {
               return const Center(
-                child: Text("!یاداشتی ای وجود ندارد", style: titleStyle, textDirection: TextDirection.ltr,),
+                child: Text(
+                  "!یاداشتی ای وجود ندارد",
+                  style: titleStyle,
+                  textDirection: TextDirection.ltr,
+                ),
               );
             }
 
@@ -28,14 +35,7 @@ class NotesPage extends StatelessWidget {
               itemCount: box.values.length,
               itemBuilder: (context, index) {
                 Note note = box.values.elementAt(index);
-                return Card(
-                  child: ElevatedButton(
-                    child: Text("${note.name}"),
-                    onPressed: () {
-                      note.delete();
-                    },
-                  ),
-                );
+                return NoteItem(note: note);
               },
             );
           },
@@ -49,6 +49,6 @@ class NotesPage extends StatelessWidget {
         backgroundColor: Colors.teal.shade300,
         foregroundColor: Colors.white,
       ),
-    );
+    ));
   }
 }

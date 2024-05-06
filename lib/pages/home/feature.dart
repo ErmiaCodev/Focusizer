@@ -24,9 +24,9 @@ class FeatureBox extends StatelessWidget {
         },
         borderRadius: BorderRadius.all(Radius.circular(15)),
         child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Container(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
                 Row(
@@ -50,7 +50,7 @@ class FeatureBox extends StatelessWidget {
             ),
             decoration: BoxDecoration(
                 color: Colors.grey.shade200,
-                borderRadius: BorderRadius.all(Radius.circular(15)),
+                borderRadius: const BorderRadius.all(Radius.circular(15)),
                 border: Border.all(color: Colors.blueGrey.shade300)),
           ),
         ),
