@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:taskizer/pages/notes/note_add.dart';
 import 'package:taskizer/pages/notes/notes_page.dart';
+import 'package:taskizer/pages/tasks/task_add_page.dart';
 import 'package:taskizer/pages/tasks/tasks_page.dart';
 import '/pages/home/home_page.dart';
 import '/pages/login/login.dart';
@@ -55,7 +56,7 @@ class App extends ConsumerWidget {
             '/notes': (context) => const NotesPage(),
             '/notes/add': (context) => AddNote(),
             '/tasks': (context) => TasksPage(),
-            '/tasks/add': (context) => TasksPage(),
+            '/tasks/add': (context) => TaskAddPage(),
             '/auth/login': (context) => LoginPage(),
           },
         );

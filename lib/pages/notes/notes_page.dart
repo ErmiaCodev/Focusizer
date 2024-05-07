@@ -35,13 +35,14 @@ class NotesPage extends StatelessWidget {
               itemCount: box.values.length,
               itemBuilder: (context, index) {
                 Note note = box.values.elementAt(index);
-                return NoteItem(note: note);
+                return NoteItem(note: note, index: index);
               },
             );
           },
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'notesList',
         onPressed: () {
           Navigator.of(context).pushNamed("/notes/add");
         },

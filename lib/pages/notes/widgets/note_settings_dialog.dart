@@ -4,9 +4,10 @@ import 'package:taskizer/models/note.dart';
 import 'package:taskizer/styles/global.dart';
 
 class NoteSettingsDialog extends StatefulWidget {
-  NoteSettingsDialog({required this.note, super.key});
+  NoteSettingsDialog({required this.note, required this.index, super.key});
 
   final Note note;
+  final int index;
 
   @override
   State<NoteSettingsDialog> createState() => _NoteSettingsDialog();
@@ -38,6 +39,7 @@ class _NoteSettingsDialog extends State<NoteSettingsDialog> {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.small(
+      heroTag: 'note_settings_${widget.index}',
       child: Icon(Icons.settings),
       backgroundColor: Colors.teal.shade300,
       foregroundColor: Colors.white,

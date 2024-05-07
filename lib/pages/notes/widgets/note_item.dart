@@ -6,9 +6,10 @@ import 'package:taskizer/pages/notes/widgets/note_settings_dialog.dart';
 import 'package:taskizer/styles/global.dart';
 
 class NoteItem extends StatelessWidget {
-  NoteItem({required this.note, super.key});
+  NoteItem({required this.note, required this.index, super.key});
 
   final Note note;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class NoteItem extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Text(note.name, style: titleStyle),
                 ),
-                NoteSettingsDialog(note: note),
+                NoteSettingsDialog(note: note, index: index),
               ],
             ),
           ),

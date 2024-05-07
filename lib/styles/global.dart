@@ -19,6 +19,12 @@ const titleStyle = TextStyle(
   // color: Colors.blueGrey.shade700,
 );
 
+const normTextStyle = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.normal,
+  // color: Colors.blueGrey.shade700,
+);
+
 final itemBoxStyle = BoxDecoration(
     color: Colors.teal.shade50,
     borderRadius: const BorderRadius.all(Radius.circular(15)),

@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:taskizer/constants/db.dart';
-import 'package:taskizer/models/note.dart';
-import 'package:taskizer/pages/home/home_page.dart';
-import 'package:taskizer/styles/global.dart';
+import '/constants/db.dart';
+import '/models/note.dart';
+import '/styles/global.dart';
 
 class AddNote extends StatefulWidget {
   final formKey = GlobalKey<FormState>();
@@ -76,6 +75,7 @@ class _AddTaskState extends State<AddNote> {
                   Flexible(
                     fit: FlexFit.loose,
                     child: FloatingActionButton.extended(
+                      heroTag: 'submitNote',
                       onPressed: onFormSubmit,
                       label: Text("ذخیره", style: labelStyle),
                       backgroundColor: Colors.teal.shade300,

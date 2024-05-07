@@ -17,7 +17,7 @@ class _TaskAddDialog extends State<TaskAddDialog> {
 
   void createNote() {
     Box<Task> contactsBox = Hive.box<Task>(tasksBoxName);
-    contactsBox.add(Task(name: name, caption: caption, date: DateTime.now()));
+    contactsBox.add(Task(name: name, caption: caption, duration: 0, date: DateTime.now()));
   }
 
   @override
