@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taskizer/styles/global.dart';
 
 class Infoer extends StatefulWidget {
   const Infoer({super.key});
@@ -17,10 +18,39 @@ class _Infoer extends State<Infoer> {
       builder: (context) {
         return AlertDialog(
           title: Text("ویرایش پروسه"),
-          content: const SingleChildScrollView(
+          content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-
+                TextField(
+                  autofocus: true,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      label: Text("تیتر")
+                  ),
+                ),
+                SizedBox(height: 20),
+                TextField(
+                  maxLines: 4,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    hintText: "توضیحات",
+                  ),
+                ),
+                SizedBox(height: 20),
+                Flexible(
+                    fit: FlexFit.loose,
+                    child: FloatingActionButton.extended(
+                      heroTag: 'submitNote',
+                      onPressed: () {},
+                      label: Text("ذخیره", style: labelStyle),
+                      backgroundColor: Colors.teal.shade300,
+                      foregroundColor: Colors.white,
+                    )
+                )
               ],
             ),
           ),
