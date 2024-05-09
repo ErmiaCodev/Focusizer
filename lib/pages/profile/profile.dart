@@ -37,11 +37,11 @@ class ProfilePage extends ConsumerWidget {
                     children: [
                       FloatingActionButton.extended(
                         onPressed: () {
-                          ref.read(toggleThemeProvider);
+                          // ref.read(toggleThemeProvider);
                         },
                         heroTag: 'follow',
                         elevation: 0,
-                        label: const Text("تنظیمات"),
+                        label: const Text("حالت شب"),
                         icon: const Icon(Icons.person_add_alt_1),
                       ),
                       const SizedBox(width: 16.0),

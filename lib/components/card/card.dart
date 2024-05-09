@@ -9,8 +9,8 @@ const cardTitle = TextStyle(
 
 const cardText = TextStyle(
   color: Colors.white,
-  fontSize: 16,
-  fontWeight: FontWeight.normal,
+  fontSize: 17,
+  fontWeight: FontWeight.bold,
   fontFamily: 'Bach'
 );
 

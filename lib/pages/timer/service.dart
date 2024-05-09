@@ -53,6 +53,11 @@ class MyTaskHandler extends TaskHandler {
   // Called every [interval] milliseconds in [ForegroundTaskOptions].
   @override
   void onRepeatEvent(DateTime timestamp, SendPort? sendPort) async {
+    if (_seconds == 0) {
+      FlutterForegroundTask.stopService();
+      return;
+    }
+
     var minutes = _seconds ~/ 60;
     var pureSec = _seconds - (minutes * 60);
     FlutterForegroundTask.updateService(

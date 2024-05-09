@@ -6,6 +6,7 @@ import 'package:taskizer/components/appbar/navbar.dart';
 import 'package:taskizer/constants/db.dart';
 import 'package:taskizer/models/task.dart';
 import 'package:taskizer/pages/timer/infoer/infoer.dart';
+import 'package:taskizer/pages/timer/tools/notes_tool.dart';
 import 'package:taskizer/styles/global.dart';
 
 import './progress/progress.dart';
@@ -150,15 +151,16 @@ class _TimerPageState extends State<TimerPage> {
         if (data == 'onNotificationPressed') {
           Navigator.of(context).pushNamed('/');
         } else if (data == "onCanceled") {
+          FlutterForegroundTask.stopService();
           setState(() => _isRunning = false);
           _onCanceled();
         } else if (data == "onFinished") {
+          FlutterForegroundTask.stopService();
           setState(() => _isRunning = false);
           _onFinished();
         } else if (data == "onDestroy") {
+          FlutterForegroundTask.stopService();
           setState(() {
-            _duration = 5;
-            _remaining = 0;
             _isRunning = false;
           });
         }
@@ -237,16 +239,17 @@ class _TimerPageState extends State<TimerPage> {
         topic: _topic,
         date: DateTime.now(),
         duration: _duration));
-    Navigator.of(context).pop();
+    Navigator.popUntil(context, ModalRoute.withName('/'));
   }
 
   void _onCanceled() {
+
+    print(_duration);
     print("on Canceled");
   }
 
   void _resetTask() {
     setState(() {
-      _duration = 5;
       _remaining = 0;
       _isRunning = false;
     });
@@ -269,45 +272,70 @@ class _TimerPageState extends State<TimerPage> {
           }
         },
         child: Scaffold(
-          appBar: Navbar("میز  تمزکز"),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              (!_isRunning)
-                  ? TimeSelector(
-                      callback: (value) {
-                        setState(() {
-                          _duration = value;
-                        });
-                      },
+            appBar: Navbar("میز  تمرکز"),
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ListBody(
+                  children: [
+                    (!_isRunning)
+                        ? TimeSelector(
+                            callback: (value) {
+                              setState(() {
+                                _duration = value;
+                              });
+                            },
+                          )
+                        : ProgressSlider(rem: _remaining, max: _duration * 60),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Infoer(
+                          givenTitle: _title,
+                          onChange: (title, topic) {
+                            setState(() {
+                              _title = title;
+                              _topic = topic;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildContentView(),
+                      ],
                     )
-                  : ProgressSlider(rem: _remaining, max: _duration * 60),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                  ],
+                )
+              ],
+            ),
+            bottomNavigationBar: Container(
+              height: 80,
+              color: Colors.teal.shade50,
+              padding: EdgeInsets.all(0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Infoer(
-                    givenTitle: _title,
-                    onChange: (title, topic) {
-                      setState(() {
-                        _title = title;
-                        _topic = topic;
-                      });
-                    },
-                  ),
+                  NotesTool(),
+                  TextButton(
+                      onPressed: () {},
+                      child: const Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.note_add),
+                          Text("ماشین حساب", style: TextStyle(fontSize: 14)),
+                        ],
+                      )),
                 ],
               ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildContentView(),
-                ],
-              )
-            ],
-          ),
-        ),
+            )),
       ),
     );
   }

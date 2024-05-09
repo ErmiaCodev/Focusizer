@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:taskizer/constants/db.dart';
+import 'package:taskizer/models/task.dart';
 import '/pages/home/feature.dart';
 import '/components/appbar/navbar.dart';
 import '/components/card/card.dart';
@@ -34,8 +37,10 @@ class HomePage extends ConsumerWidget {
             foregroundColor: Colors.white,
             leading: IconButton(
               icon: const Icon(Icons.person),
-              onPressed: () => Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (builder) => ProfilePage())),
+              onPressed: () =>
+                  Navigator.of(context)
+                      .push(
+                      MaterialPageRoute(builder: (builder) => ProfilePage())),
             ),
           ),
           body: SingleChildScrollView(
@@ -44,38 +49,53 @@ class HomePage extends ConsumerWidget {
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  SizedBox(height: 10),
+                  ValueListenableBuilder(
+                    valueListenable: Hive.box<Task>(tasksBoxName).listenable(),
+                    builder: (context, Box<Task> box, child) {
+                      if (box.values.isEmpty) {
+                        return ItemCard(
+                          color: Colors.teal,
+                          title: "تمرکز کنید!",
+                          note: "کل تسک ها:",
+                          timestamp: "هیچی",
+                          onTap: () {
+                            Navigator.of(context).pushNamed('/timer');
+                          },
+                        );
+                      }
 
-                  Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: ItemCard(
+                      return ItemCard(
                         color: Colors.teal,
                         title: "تمرکز کنید!",
-                        note: "کل تسک ها:",
-                        timestamp: "هیچی",
+                        note: "کل پروسه ها:",
+                        timestamp: "${box.values.length}",
                         onTap: () {
                           Navigator.of(context).pushNamed('/timer');
                         },
-                      )),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          const Text(
-                            "سلام ",
-                            style: titleStyle,
-                          ),
-                          Text(
-                            " ${user.name} ",
-                            style: emphesizeStyle,
-                          ),
-                          const Text(
-                            "خوش آومدی!",
-                            style: titleStyle,
-                          ),
-                        ],
-                      )),
-                  Column(
+                      );
+                    },
+                  ),
+                  SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      const Text(
+                        "سلام ",
+                        style: titleStyle,
+                      ),
+                      Text(
+                        " ${user.name} ",
+                        style: emphesizeStyle,
+                      ),
+                      const Text(
+                        "خوش آومدی!",
+                        style: titleStyle,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 30),
+                  const Column(
                     children: [
                       Row(
                         children: [

@@ -5,6 +5,7 @@ import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 class TimeSelector extends StatefulWidget {
   const TimeSelector({required this.callback, super.key});
+
   final Function(int) callback;
 
   @override
@@ -21,7 +22,7 @@ class _SelectorState extends State<TimeSelector> {
       max: 30,
       initialValue: 5,
       appearance: CircularSliderAppearance(
-          size: 279,
+          size: 260,
           startAngle: 120,
           angleRange: 300,
           animationEnabled: true,
@@ -32,8 +33,8 @@ class _SelectorState extends State<TimeSelector> {
             progressBarColor: Colors.teal.shade300,
           ),
           customWidths: CustomSliderWidths(
-            trackWidth: 5,
-            progressBarWidth: 20,
+            trackWidth: 8,
+            progressBarWidth: 18,
             handlerSize: 4,
           )),
       innerWidget: (double value) {
@@ -41,17 +42,22 @@ class _SelectorState extends State<TimeSelector> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-                child: Text(
-              "${value.toInt()} دقیقه",
-              textDirection: TextDirection.rtl,
-              style: TextStyle(color: Colors.black, fontSize: 20),
-            ))
+              padding: EdgeInsets.only(top: 8),
+              child: Text(
+                "${value.toInt()} دقیقه",
+                textDirection: TextDirection.rtl,
+                style: TextStyle(
+                    color: Colors.green.shade700,
+                    fontSize: 26,
+                    fontWeight: FontWeight.w600),
+              ),
+            )
           ],
         );
       },
       onChangeEnd: (double weight) {
         setState(() {
-          var minutes = max(int.parse(weight.ceil().toString())-1, 0);
+          var minutes = max(int.parse(weight.ceil().toString()) - 1, 0);
           _value = minutes;
           widget.callback(minutes);
         });

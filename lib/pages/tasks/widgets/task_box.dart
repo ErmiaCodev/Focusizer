@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:taskizer/models/task.dart';
-import 'package:taskizer/styles/global.dart';
+import '/models/task.dart';
+import '/pages/tasks/task_detail.dart';
+import '/styles/global.dart';
 
 class TaskBox extends StatelessWidget {
   const TaskBox({required this.task, super.key});
@@ -14,7 +13,9 @@ class TaskBox extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(10),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => TaskDetailPage(task: task)));
+        },
         borderRadius: BorderRadius.all(Radius.circular(20)),
         child: Padding(
           padding: EdgeInsets.all(5),
