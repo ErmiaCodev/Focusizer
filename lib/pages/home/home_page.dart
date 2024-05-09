@@ -49,11 +49,11 @@ class HomePage extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: ItemCard(
                         color: Colors.teal,
-                        title: "مدیریت تسک ها",
+                        title: "تمرکز کنید!",
                         note: "کل تسک ها:",
                         timestamp: "هیچی",
                         onTap: () {
-                          Navigator.of(context).pushNamed('/tasks');
+                          Navigator.of(context).pushNamed('/timer');
                         },
                       )),
                   Padding(
@@ -87,7 +87,7 @@ class HomePage extends ConsumerWidget {
                           FeatureBox(
                             title: "تسک ها",
                             icon: "assets/icon/second.png",
-                            link: "/notes",
+                            link: "/tasks",
                           ),
                         ],
                       )
