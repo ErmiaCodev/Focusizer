@@ -1,61 +1,71 @@
 import 'package:flutter/material.dart';
+import 'package:taskizer/pages/timer/infoer/dropdown.dart';
 import 'package:taskizer/styles/global.dart';
 
 class Infoer extends StatefulWidget {
-  const Infoer({super.key});
+  const Infoer({required this.givenTitle, required this.onChange, super.key});
+
+  final Function(String, String?) onChange;
+  final String givenTitle;
 
   @override
   _Infoer createState() => _Infoer();
 }
 
 class _Infoer extends State<Infoer> {
-  String? topic;
-  String title = "";
+  String? _topic;
+  String _title = "";
 
   Future<void> _onEdit() async {
     await showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text("ویرایش پروسه"),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                TextField(
-                  autofocus: true,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                      ),
-                      label: Text("تیتر")
-                  ),
-                ),
-                SizedBox(height: 20),
-                TextField(
-                  maxLines: 4,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    hintText: "توضیحات",
-                  ),
-                ),
-                SizedBox(height: 20),
-                Flexible(
-                    fit: FlexFit.loose,
-                    child: FloatingActionButton.extended(
-                      heroTag: 'submitNote',
-                      onPressed: () {},
-                      label: Text("ذخیره", style: labelStyle),
-                      backgroundColor: Colors.teal.shade300,
-                      foregroundColor: Colors.white,
-                    )
-                )
-              ],
-            ),
-          ),
-        );
+        return _buildDialog();
       },
+    );
+  }
+
+  Widget _buildDialog() {
+    return AlertDialog(
+      title: Text("ویرایش پروسه"),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            TextField(
+              autofocus: true,
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
+                  label: Text("تیتر")),
+              onChanged: (value) {
+                setState(() {
+                  _title = value;
+                });
+              },
+            ),
+            SizedBox(height: 20),
+            TopicsDropDown(onChange: (v) {
+              setState(() {
+                _topic = v;
+              });
+            }),
+            SizedBox(height: 20),
+            FloatingActionButton.extended(
+              heroTag: 'submitNote',
+              onPressed: () {
+                if (_title.length > 0) {
+                  widget.onChange(_title, _topic);
+                  Navigator.of(context).pop();
+                }
+              },
+              label: Text("ذخیره", style: labelStyle),
+              backgroundColor: Colors.teal.shade300,
+              foregroundColor: Colors.white,
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -76,7 +86,7 @@ class _Infoer extends State<Infoer> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "موضوع",
+                (widget.givenTitle == "" ) ? "موضوع" : "${widget.givenTitle}",
                 style: TextStyle(
                     color: Colors.teal.shade800,
                     fontSize: 16,

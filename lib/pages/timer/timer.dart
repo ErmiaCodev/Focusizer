@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'dart:isolate';
 
+import 'package:hive_flutter/adapters.dart';
 import 'package:taskizer/components/appbar/navbar.dart';
+import 'package:taskizer/constants/db.dart';
 import 'package:taskizer/models/task.dart';
 import 'package:taskizer/pages/timer/infoer/infoer.dart';
 import 'package:taskizer/styles/global.dart';
@@ -27,6 +29,8 @@ class _TimerPageState extends State<TimerPage> {
   int _duration = 5;
   bool _isRunning = false;
   ReceivePort? _receivePort;
+  String _title = "";
+  String? _topic;
 
   Future<void> _requestPermissionForAndroid() async {
     if (!Platform.isAndroid) {
@@ -146,10 +150,10 @@ class _TimerPageState extends State<TimerPage> {
         if (data == 'onNotificationPressed') {
           Navigator.of(context).pushNamed('/');
         } else if (data == "onCanceled") {
-          setState(() =>  _isRunning = false);
+          setState(() => _isRunning = false);
           _onCanceled();
         } else if (data == "onFinished") {
-          setState(() =>  _isRunning = false);
+          setState(() => _isRunning = false);
           _onFinished();
         } else if (data == "onDestroy") {
           setState(() {
@@ -205,7 +209,8 @@ class _TimerPageState extends State<TimerPage> {
           content: const SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('شما یک پروسه را با تمرکز به پایان رساندید!', style: TextStyle(fontSize: 16)),
+                Text('شما یک پروسه را با تمرکز به پایان رساندید!',
+                    style: TextStyle(fontSize: 16)),
               ],
             ),
           ),
@@ -222,6 +227,16 @@ class _TimerPageState extends State<TimerPage> {
         );
       },
     );
+    _saveTask();
+  }
+
+  void _saveTask() {
+    Box<Task> tasksBox = Hive.box<Task>(tasksBoxName);
+    tasksBox.add(Task(
+        name: _title,
+        topic: _topic,
+        date: DateTime.now(),
+        duration: _duration));
     Navigator.of(context).pop();
   }
 
@@ -271,7 +286,17 @@ class _TimerPageState extends State<TimerPage> {
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Infoer()],
+                children: [
+                  Infoer(
+                    givenTitle: _title,
+                    onChange: (title, topic) {
+                      setState(() {
+                        _title = title;
+                        _topic = topic;
+                      });
+                    },
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
               Row(
@@ -309,7 +334,7 @@ class _TimerPageState extends State<TimerPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           (!_isRunning)
-              ? ((_duration > 0)
+              ? ((_duration > 0 && _title != "" && _topic != null)
                   ? buttonBuilder('شروع!', Colors.teal.shade300,
                       onPressed: _startClicked)
                   : const Text(""))

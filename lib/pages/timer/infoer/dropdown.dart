@@ -43,26 +43,27 @@ class _TopicsDropDownState extends State<TopicsDropDown> {
     Color? iconEnabledColor,
   }) =>
       DropdownButton<String>(
-          value: _selected,
-          underline: underline,
-          icon: icon,
-          dropdownColor: dropdownColor,
-          style: style,
-          iconEnabledColor: iconEnabledColor,
-          onChanged: (String? newValue) {
-            setState(() {
-              _selected = newValue;
-              widget.onChange(newValue);
-            });
-          },
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-          hint: Text("یک موضوع را انتخاب کنید", style: hintStyle),
-          items: _topics
-              .map(
-                (topic) => DropdownMenuItem<String>(
-                  value: topic.uid,
-                  child: Text(topic.name),
-                ),
-              )
-              .toList());
+        value: _selected,
+        underline: underline,
+        icon: icon,
+        dropdownColor: dropdownColor,
+        style: style,
+        iconEnabledColor: iconEnabledColor,
+        onChanged: (String? newValue) {
+          setState(() {
+            _selected = newValue;
+            widget.onChange(newValue);
+          });
+        },
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        hint: Text("یک موضوع را انتخاب کنید", style: hintStyle),
+        items: _topics
+            .map(
+              (topic) => DropdownMenuItem<String>(
+                value: topic.uid,
+                child: Text(topic.name),
+              ),
+            )
+            .toList(),
+      );
 }
