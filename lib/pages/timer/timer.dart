@@ -247,11 +247,19 @@ class _TimerPageState extends State<TimerPage> {
         topic: _topic,
         date: DateTime.now(),
         duration: _duration));
-    Navigator.popUntil(context, ModalRoute.withName('/'));
+
+    if (Navigator.of(context).canPop()) {
+      Navigator.popUntil(context, ModalRoute.withName('/timer'));
+
+      if (Navigator.of(context).canPop()) {
+        Navigator.popUntil(context, ModalRoute.withName('/'));
+      } else {
+        Navigator.pushNamed(context, "/");
+      }
+    }
   }
 
   void _onCanceled() {
-
     print(_duration);
     print("on Canceled");
   }

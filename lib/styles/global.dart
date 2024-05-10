@@ -24,9 +24,3 @@ const normTextStyle = TextStyle(
   fontWeight: FontWeight.normal,
   // color: Colors.blueGrey.shade700,
 );
-
-final itemBoxStyle = BoxDecoration(
-    color: Colors.teal.shade50,
-    borderRadius: const BorderRadius.all(Radius.circular(15)),
-    border: Border.all(color: Colors.teal.shade200)
-);

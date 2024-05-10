@@ -112,7 +112,7 @@ class TaskDetailPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("موضوع", style: titleStyle),
+                  Text("زمان", style: titleStyle),
                   Container(
                     padding: EdgeInsets.symmetric(vertical:  8, horizontal: 12),
                     decoration: BoxDecoration(

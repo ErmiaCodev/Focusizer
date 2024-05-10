@@ -10,27 +10,13 @@ import '/pages/login/login.dart';
 import '/store/auth.dart';
 import '/store/theme.dart';
 
-
-class SimpleApp extends StatelessWidget {
-  SimpleApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: TimerPage(),
-    );
-  }
-}
-
 class App extends StatelessWidget {
-  const App({super.key});
+  const App({required this.themeMode, super.key});
+
+  final bool themeMode;
 
   @override
   Widget build(BuildContext context) {
-
-    // final authProvider = ref.watch(getUserProvider);
-    // final themeState = ref.watch(getThemeProvider);
-    // final themeMode = ref.watch(themeProvider);
     return MaterialApp(
       localizationsDelegates: const [
         GlobalCupertinoLocalizations.delegate,
@@ -44,17 +30,24 @@ class App extends StatelessWidget {
       title: "Taskizer",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
-        fontFamily: 'Bach',
         useMaterial3: true,
+        fontFamily: 'Bach',
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.teal, background: Colors.teal.shade50),
       ),
       darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        colorScheme: ColorScheme.fromSeed(brightness: Brightness.dark, seedColor: Colors.teal, background: Colors.blueGrey.shade900),
-        hintColor: Colors.white,
         useMaterial3: true,
         fontFamily: 'Bach',
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.fromSeed(
+            brightness: Brightness.dark,
+            seedColor: Colors.teal,
+            background: Colors.blueGrey.shade900,
+            secondary: Colors.blueGrey.shade700,
+            primary: Colors.white),
+        hintColor: Colors.white,
       ),
+      themeMode: themeMode ? ThemeMode.dark : ThemeMode.dark,
       initialRoute: '/',
       routes: {
         '/': (context) => const HomePage(),

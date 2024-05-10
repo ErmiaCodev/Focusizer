@@ -1,18 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:taskizer/constants/db.dart';
+import 'package:taskizer/models/note.dart';
+import 'package:taskizer/models/task.dart';
+import 'package:taskizer/styles/global.dart';
 import '/components/guard/guard.dart';
 import '/store/auth.dart';
 import '/store/theme.dart';
 
-class ProfilePage extends ConsumerWidget {
+class ProfilePage extends StatelessWidget {
   ProfilePage({Key? key}) : super(key: key);
   // final _auth = AuthService();
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.read(userProvider);
+  void _deleteHiveData() async {
+    final tasksBox =  Hive.box<Task>(tasksBoxName);
+    final notesBox = Hive.box<Note>(notesBoxName);
 
+    tasksBox.clear();
+    notesBox.clear();
+  }
+
+  Future<void> _onLogout(BuildContext context, WidgetRef ref) async {
+    _deleteHiveData();
+
+    const storage = FlutterSecureStorage();
+    ref.read(userProvider.notifier).updateLogout();
+    await storage.delete(key: 'token');
+
+    if (Navigator.of(context).canPop()) {
+      Navigator.pop(context);
+    }
+
+    Navigator.of(context)
+        .pushReplacementNamed('/auth/login');
+  }
+
+
+  Future<void> _onThemeToggle(BuildContext context, WidgetRef ref) async {
+    final c = await ref.read(toggleThemeProvider);
+    print(c);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Guard(
           child: Column(
@@ -22,58 +54,56 @@ class ProfilePage extends ConsumerWidget {
             flex: 3,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Text(
-                    user.name,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final user = ref.read(userProvider);
+
+                  return Column(
                     children: [
-                      FloatingActionButton.extended(
-                        onPressed: () {
-                          // ref.read(toggleThemeProvider);
-                        },
-                        heroTag: 'follow',
-                        elevation: 0,
-                        label: const Text("حالت شب"),
-                        icon: const Icon(Icons.person_add_alt_1),
+                      Text(
+                        user.name,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
-                      const SizedBox(width: 16.0),
-                      FloatingActionButton.extended(
-                        onPressed: () async {
-                          const storage = FlutterSecureStorage();
-                          ref.read(userProvider.notifier).updateLogout();
-                          await storage.delete(key: 'token');
-                          if (Navigator.of(context).canPop()) {
-                            Navigator.pop(context);
-                          }
-                          Navigator.of(context)
-                              .pushReplacementNamed('/auth/login');
-                        },
-                        heroTag: 'mesage',
-                        elevation: 0,
-                        backgroundColor: Colors.red,
-                        label: const Text("خروج"),
-                        icon: const Icon(Icons.exit_to_app),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FloatingActionButton.extended(
+                            onPressed: () => _onThemeToggle(context, ref),
+                            heroTag: 'follow',
+                            elevation: 0,
+                            backgroundColor: Colors.indigo.shade300,
+                            foregroundColor: Colors.white,
+                            label: const Text("حالت شب", style: normTextStyle),
+                            icon: const Icon(Icons.nightlight),
+                          ),
+                          const SizedBox(width: 16.0),
+                          FloatingActionButton.extended(
+                            onPressed: () => _onLogout(context, ref),
+                            heroTag: 'logout',
+                            elevation: 0,
+                            backgroundColor: Colors.red.shade300,
+                            label: const Text("خروج", style: normTextStyle),
+                            icon: const Icon(Icons.exit_to_app),
+                          ),
+                        ],
                       ),
+                      const SizedBox(height: 16),
+                      const _ProfileInfoRow()
                     ],
-                  ),
-                  const SizedBox(height: 16),
-                  const _ProfileInfoRow()
-                ],
-              ),
+                  );
+                },
+              )
             ),
           ),
         ],
       )),
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.cyan.shade300,
         child: const Icon(Icons.arrow_back),
         onPressed: () {
           Navigator.of(context).pop();
@@ -87,9 +117,9 @@ class _ProfileInfoRow extends StatelessWidget {
   const _ProfileInfoRow({Key? key}) : super(key: key);
 
   final List<ProfileInfoItem> _items = const [
-    ProfileInfoItem("Posts", 900),
-    ProfileInfoItem("Followers", 120),
-    ProfileInfoItem("Following", 200),
+    ProfileInfoItem("تسک ها", 0),
+    ProfileInfoItem("یاداشت ها", 0),
+    ProfileInfoItem("فایل ها", 0),
   ];
 
   @override
@@ -116,7 +146,7 @@ class _ProfileInfoRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(6.0),
             child: Text(
               item.value.toString(),
               style: const TextStyle(
@@ -127,7 +157,7 @@ class _ProfileInfoRow extends StatelessWidget {
           ),
           Text(
             item.title,
-            style: Theme.of(context).textTheme.caption,
+            style: labelStyle,
           )
         ],
       );

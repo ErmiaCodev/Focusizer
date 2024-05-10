@@ -14,19 +14,16 @@ Future<void> main() async {
 
   final container = ProviderContainer();
   await container.read(getUserProvider.future);
-  await container.read(getThemeProvider.future);
+  final theme = await container.read(getThemeProvider.future);
 
   await Hive.initFlutter();
-
   Hive.registerAdapter<Task>(TaskAdapter());
   Hive.registerAdapter<Note>(NoteAdapter());
   await Hive.openBox<Task>(tasksBoxName);
   await Hive.openBox<Note>(notesBoxName);
-  // await Hive.openBox<Note>("project");
-
 
   runApp(UncontrolledProviderScope(
     container: container,
-    child: const App(),
+    child: App(themeMode: theme),
   ));
 }

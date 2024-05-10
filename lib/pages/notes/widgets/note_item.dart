@@ -21,7 +21,11 @@ class NoteItem extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(5),
         child: Container(
-          decoration: itemBoxStyle,
+          decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondary,
+              borderRadius: const BorderRadius.all(Radius.circular(15)),
+              border: Border.all(color: Colors.teal.shade200)
+          ),
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: Row(

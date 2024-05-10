@@ -28,9 +28,9 @@ class _SelectorState extends State<TimeSelector> {
           animationEnabled: true,
           customColors: CustomSliderColors(
             hideShadow: true,
-            trackColor: Colors.green.shade200,
-            dotColor: Color(0XFFFAFAFA),
-            progressBarColor: Colors.teal.shade300,
+            trackColor: (Theme.of(context).colorScheme.brightness == Brightness.dark) ? Colors.green.shade300 :  Colors.green.shade200,
+            dotColor: Theme.of(context).colorScheme.secondary,
+            progressBarColor: (Theme.of(context).colorScheme.brightness == Brightness.dark) ? Colors.teal.shade400 : Colors.teal.shade300,
           ),
           customWidths: CustomSliderWidths(
             trackWidth: 8,
@@ -47,7 +47,7 @@ class _SelectorState extends State<TimeSelector> {
                 "${value.toInt()} دقیقه",
                 textDirection: TextDirection.rtl,
                 style: TextStyle(
-                    color: Colors.green.shade700,
+                    color: (Theme.of(context).colorScheme.brightness == Brightness.dark) ? Colors.green.shade50 : Colors.green.shade700,
                     fontSize: 26,
                     fontWeight: FontWeight.w600),
               ),
@@ -67,7 +67,7 @@ class _SelectorState extends State<TimeSelector> {
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.teal.shade50,
+        color: (Theme.of(context).colorScheme.brightness == Brightness.dark) ? Colors.blueGrey.shade700 : Colors.green.shade50,
       ),
       child: slider,
     );
