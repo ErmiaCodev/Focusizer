@@ -149,20 +149,28 @@ class _TimerPageState extends State<TimerPage> {
         }
       } else if (data is String) {
         if (data == 'onNotificationPressed') {
+
           Navigator.of(context).pushNamed('/');
+
         } else if (data == "onCanceled") {
+
           FlutterForegroundTask.stopService();
           setState(() => _isRunning = false);
           _onCanceled();
+
         } else if (data == "onFinished") {
+
           FlutterForegroundTask.stopService();
           setState(() => _isRunning = false);
           _onFinished();
+
         } else if (data == "onDestroy") {
+
           FlutterForegroundTask.stopService();
           setState(() {
             _isRunning = false;
           });
+
         }
       } else if (data is WakeOption) {
         setState(() {
