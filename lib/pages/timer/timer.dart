@@ -57,10 +57,10 @@ class _TimerPageState extends State<TimerPage> {
     FlutterForegroundTask.init(
       androidNotificationOptions: AndroidNotificationOptions(
         foregroundServiceType: AndroidForegroundServiceType.DATA_SYNC,
-        channelId: 'taskizer',
-        channelName: 'Taskizer Service Notification',
+        channelId: 'foreground_service',
+        channelName: 'Focusing',
         channelDescription:
-            'This notification appears when the foreground service is running.',
+        'This notification appears when the foreground service is running.',
         channelImportance: NotificationChannelImportance.LOW,
         priority: NotificationPriority.LOW,
         iconData: const NotificationIconData(
