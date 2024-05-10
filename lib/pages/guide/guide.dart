@@ -11,30 +11,36 @@ class GuidePage extends StatelessWidget {
       body: OnboardingPagePresenter(
         pages: [
           OnboardingPageModel(
-            title: 'Fast, Fluid and Secure',
+            title: 'تمرکز یار',
             description:
-                'Enjoy the best of the world in the palm of your hands.',
-            imageUrl: 'https://i.ibb.co/cJqsPSB/scooter.png',
+                'برنامه ای برای سامان دهی امور',
+            imageUrl: 'assets/icon/logo.png',
             bgColor: Colors.indigo,
           ),
           OnboardingPageModel(
-            title: 'Connect with your friends.',
-            description: 'Connect with your friends anytime anywhere.',
-            imageUrl: 'https://i.ibb.co/LvmZypG/storefront-illustration-2.png',
-            bgColor: const Color(0xff1eb090),
-          ),
-          OnboardingPageModel(
-            title: 'Bookmark your favourites',
-            description:
-                'Bookmark your favourite quotes to read at a leisure time.',
-            imageUrl: 'https://i.ibb.co/420D7VP/building.png',
+            title: 'فضای ارتباط',
+            description: 'ارتباط با سایر کاربران از طریق اشتراک گذاری',
+            imageUrl: 'assets/storefront.png',
             bgColor: const Color(0xfffeae4f),
           ),
           OnboardingPageModel(
-            title: 'Follow creators',
-            description: 'Follow your favourite creators to stay in the loop.',
-            imageUrl: 'https://i.ibb.co/cJqsPSB/scooter.png',
+            title: 'یاداشت ها',
+            description:
+                'فرمول ها و نکات را برای خود یاداشت کنید و هنگام تمرکز استفاده کنید',
+            imageUrl: 'assets/building.png',
+            bgColor: const Color(0xff1eb090),
+          ),
+          OnboardingPageModel(
+            title: 'فایل ها',
+            description: 'فایل ها و جزوات را ذخیره کرده و هنگام مطالعه استفاده کنید',
+            imageUrl: 'assets/scooter.png',
             bgColor: Colors.purple,
+          ),
+          OnboardingPageModel(
+            title: 'پروسه ها',
+            description: 'مدت زمانی رو انتخاب کنید و روی آن متمرکز شوید',
+            imageUrl: 'assets/storefront.png',
+            bgColor: Colors.green,
           ),
         ],
         onFinish: () {

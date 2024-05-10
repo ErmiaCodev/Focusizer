@@ -7,7 +7,6 @@ import 'package:taskizer/pages/tasks/tasks_page.dart';
 import 'package:taskizer/pages/timer/timer.dart';
 import '/pages/home/home_page.dart';
 import '/pages/login/login.dart';
-import '/store/auth.dart';
 import '/store/theme.dart';
 
 class App extends ConsumerWidget {

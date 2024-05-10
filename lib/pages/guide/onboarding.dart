@@ -48,7 +48,7 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
                           flex: 3,
                           child: Padding(
                             padding: const EdgeInsets.all(32.0),
-                            child: Image.network(
+                            child: Image.asset(
                               item.imageUrl,
                             ),
                           ),
@@ -79,6 +79,8 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
                                         .bodyText2
                                         ?.copyWith(
                                           color: item.textColor,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w600
                                         )),
                               )
                             ]))
@@ -117,7 +119,7 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
                             visualDensity: VisualDensity.comfortable,
                             foregroundColor: Colors.white,
                             textStyle: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
+                                fontSize: 16, fontWeight: FontWeight.bold, fontFamily: 'Bach')),
                         onPressed: () {
                           widget.onSkip?.call();
                         },
@@ -127,7 +129,7 @@ class _OnboardingPageState extends State<OnboardingPagePresenter> {
                           visualDensity: VisualDensity.comfortable,
                           foregroundColor: Colors.white,
                           textStyle: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold)),
+                              fontSize: 16, fontWeight: FontWeight.bold, fontFamily: 'Bach')),
                       onPressed: () {
                         if (_currentPage == widget.pages.length - 1) {
                           widget.onFinish?.call();

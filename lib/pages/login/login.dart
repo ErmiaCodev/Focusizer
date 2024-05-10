@@ -34,6 +34,7 @@ class _LoginPage extends State<LoginPage> {
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     child: TextField(
                       decoration: const InputDecoration(
+                        hintText: "نام شما",
                           border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                       )),
