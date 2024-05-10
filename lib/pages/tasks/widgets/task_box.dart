@@ -4,9 +4,10 @@ import '/pages/tasks/task_detail.dart';
 import '/styles/global.dart';
 
 class TaskBox extends StatelessWidget {
-  const TaskBox({required this.task, super.key});
+  const TaskBox({required this.index, required this.task, super.key});
 
   final Task task;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class TaskBox extends StatelessWidget {
                     child: Text(task.name, style: titleStyle),
                   ),
                   FloatingActionButton.small(
-                    heroTag: 'task_trash_${task.name}',
+                    heroTag: 'task_trash_${index}',
                     backgroundColor: Colors.red.shade300,
                     foregroundColor: Colors.white,
                     onPressed: () {

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -34,6 +35,37 @@ class HomePage extends ConsumerWidget {
                 gradient: brandGradient,
               ),
             ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    // Navigator.of(context).pushNamed("/points");
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ValueListenableBuilder(
+                        valueListenable: Hive.box(coinsBoxName).listenable(),
+                        builder: (context, Box box, child) {
+                          return Text("${box.get('coins') ?? 0}",
+                              style: TextStyle(fontSize: 18,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold));
+                        },),
+
+                      SizedBox(width: 5),
+                      Padding(
+                          padding: EdgeInsets.only(bottom: 5),
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.yellow.shade500),
+                              padding: EdgeInsets.all(2),
+                              child: Icon(Icons.currency_bitcoin, size: 20,
+                                color: Colors.black,))),
+                    ],
+                  ))
+            ],
             foregroundColor: Colors.white,
             leading: IconButton(
               icon: const Icon(Icons.person),
@@ -105,8 +137,18 @@ class HomePage extends ConsumerWidget {
                             link: "/notes",
                           ),
                           FeatureBox(
-                            title: "تسک ها",
-                            icon: "assets/icon/second.png",
+                            title: "فایل ها",
+                            icon: "assets/icon/third.png",
+                            link: "",
+                          ),
+                        ],
+                      ),
+
+                      Row(
+                        children: [
+                          FeatureBox(
+                            title: "پروسه ها",
+                            icon: "assets/icon/more.png",
                             link: "/tasks",
                           ),
                         ],

@@ -79,7 +79,7 @@ class _Infoer extends State<Infoer> {
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 12, horizontal: 15),
           decoration: BoxDecoration(
-              color: Colors.teal.shade50,
+              color: (Theme.of(context).colorScheme.brightness == Brightness.dark) ? Colors.teal.shade300 : Colors.teal.shade50,
               borderRadius: BorderRadius.all(Radius.circular(30))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -88,12 +88,12 @@ class _Infoer extends State<Infoer> {
               Text(
                 (widget.givenTitle == "" ) ? "موضوع" : "${widget.givenTitle}",
                 style: TextStyle(
-                    color: Colors.teal.shade800,
+                    color: (Theme.of(context).colorScheme.brightness == Brightness.dark) ? Colors.white : Colors.teal.shade800,
                     fontSize: 16,
                     fontWeight: FontWeight.bold),
               ),
               SizedBox(width: 10),
-              Icon(Icons.edit, color: Colors.teal.shade800),
+              Icon(Icons.edit, color: (Theme.of(context).colorScheme.brightness == Brightness.dark) ? Colors.white : Colors.teal.shade800),
             ],
           ),
         ),

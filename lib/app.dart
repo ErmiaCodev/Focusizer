@@ -10,13 +10,13 @@ import '/pages/login/login.dart';
 import '/store/auth.dart';
 import '/store/theme.dart';
 
-class App extends StatelessWidget {
-  const App({required this.themeMode, super.key});
-
-  final bool themeMode;
+class App extends ConsumerWidget {
+  const App({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(themeProvider);
+
     return MaterialApp(
       localizationsDelegates: const [
         GlobalCupertinoLocalizations.delegate,
@@ -33,7 +33,10 @@ class App extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'Bach',
         colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.teal, background: Colors.teal.shade50),
+          seedColor: Colors.teal,
+          background: Colors.white,
+          secondary: Colors.grey.shade100,
+        ),
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
@@ -47,7 +50,7 @@ class App extends StatelessWidget {
             primary: Colors.white),
         hintColor: Colors.white,
       ),
-      themeMode: themeMode ? ThemeMode.dark : ThemeMode.dark,
+      themeMode: (theme) ? ThemeMode.dark : ThemeMode.light,
       initialRoute: '/',
       routes: {
         '/': (context) => const HomePage(),
@@ -58,56 +61,5 @@ class App extends StatelessWidget {
         '/auth/login': (context) => LoginPage(),
       },
     );
-
-    // return authProvider.unwrapPrevious().when(
-    //   data: (data) {
-    //     return MaterialApp(
-    //       localizationsDelegates: const [
-    //         GlobalCupertinoLocalizations.delegate,
-    //         GlobalMaterialLocalizations.delegate,
-    //         GlobalWidgetsLocalizations.delegate,
-    //       ],
-    //       supportedLocales: const [
-    //         Locale("fa", "IR"),
-    //       ],
-    //       locale: const Locale("fa", "IR"),
-    //       title: "Taskizer",
-    //       debugShowCheckedModeBanner: false,
-    //       theme: ThemeData(
-    //         colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
-    //         fontFamily: 'Bach',
-    //         useMaterial3: true,
-    //       ),
-    //       darkTheme: ThemeData(
-    //         brightness: Brightness.dark,
-    //         colorScheme: ColorScheme.fromSeed(brightness: Brightness.dark, seedColor: Colors.teal, background: Colors.blueGrey.shade900),
-    //         hintColor: Colors.white,
-    //         useMaterial3: true,
-    //         fontFamily: 'Bach',
-    //       ),
-    //       themeMode: themeState.unwrapPrevious().when(
-    //             data: (data) => themeMode ? ThemeMode.dark : ThemeMode.light,
-    //             error: (_, __) => ThemeMode.light,
-    //             loading: () => ThemeMode.system,
-    //           ),
-    //       initialRoute: '/',
-    //       routes: {
-    //         '/': (context) => const HomePage(),
-    //         '/notes': (context) => const NotesPage(),
-    //         '/notes/add': (context) => AddNote(),
-    //         '/tasks': (context) => TasksPage(),
-    //         '/tasks/add': (context) => TaskAddPage(),
-    //         '/timer': (context) => TimerPage(),
-    //         '/auth/login': (context) => LoginPage(),
-    //       },
-    //     );
-    //   },
-    //   error: (Object error, StackTrace? stackTrace) {
-    //     return Text('error: $error\nstackTrace: $stackTrace');
-    //   },
-    //   loading: () {
-    //     return const CircularProgressIndicator();
-    //   },
-    // );
   }
 }

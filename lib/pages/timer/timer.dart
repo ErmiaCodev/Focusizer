@@ -1,12 +1,16 @@
 import 'dart:io';
 import 'dart:isolate';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:taskizer/components/appbar/navbar.dart';
 import 'package:taskizer/constants/db.dart';
 import 'package:taskizer/models/task.dart';
 import 'package:taskizer/pages/timer/infoer/infoer.dart';
 import 'package:taskizer/pages/timer/tools/notes_tool.dart';
+import 'package:taskizer/pages/timer/tools/tool_button.dart';
+import 'package:taskizer/store/theme.dart';
 import 'package:taskizer/styles/global.dart';
 
 import './progress/progress.dart';
@@ -60,7 +64,7 @@ class _TimerPageState extends State<TimerPage> {
         channelId: 'foreground_service',
         channelName: 'Focusing',
         channelDescription:
-        'This notification appears when the foreground service is running.',
+            'This notification appears when the foreground service is running.',
         channelImportance: NotificationChannelImportance.LOW,
         priority: NotificationPriority.LOW,
         iconData: const NotificationIconData(
@@ -149,28 +153,19 @@ class _TimerPageState extends State<TimerPage> {
         }
       } else if (data is String) {
         if (data == 'onNotificationPressed') {
-
           Navigator.of(context).pushNamed('/');
-
         } else if (data == "onCanceled") {
-
-          FlutterForegroundTask.stopService();
-          setState(() => _isRunning = false);
-          _onCanceled();
-
+          _cancelService(context);
+          // _onCanceled(context);
         } else if (data == "onFinished") {
-
           FlutterForegroundTask.stopService();
           setState(() => _isRunning = false);
           _onFinished();
-
         } else if (data == "onDestroy") {
-
           FlutterForegroundTask.stopService();
           setState(() {
             _isRunning = false;
           });
-
         }
       } else if (data is WakeOption) {
         setState(() {
@@ -211,33 +206,28 @@ class _TimerPageState extends State<TimerPage> {
   }
 
   Future<void> _onFinished() async {
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('تبریک!!'),
-          content: const SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('شما یک پروسه را با تمرکز به پایان رساندید!',
-                    style: TextStyle(fontSize: 16)),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FloatingActionButton.extended(
-              backgroundColor: Colors.teal.shade300,
-              foregroundColor: Colors.white,
-              label: const Text('بستن!', style: labelStyle),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+    await QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        title: "تبریک",
+        text: 'شما یک پروسه رو با موفقیت به تمام رساندید!!',
+        confirmBtnText: "تایید",
+        confirmBtnColor: Colors.green.shade300);
     _saveTask();
+  }
+
+  Future<void> _addCoins() async {
+    var box = await Hive.openBox(coinsBoxName);
+    final current = box.get('coins') ?? 0;
+    box.put('coins', current + 5);
+  }
+
+  Future<void> _decCoins() async {
+    var box = await Hive.openBox(coinsBoxName);
+    final current = box.get('coins') ?? 0;
+    if (current != 0) {
+      box.put('coins', current - 1);
+    }
   }
 
   void _saveTask() {
@@ -247,6 +237,7 @@ class _TimerPageState extends State<TimerPage> {
         topic: _topic,
         date: DateTime.now(),
         duration: _duration));
+    _addCoins();
 
     if (Navigator.of(context).canPop()) {
       Navigator.popUntil(context, ModalRoute.withName('/timer'));
@@ -259,9 +250,26 @@ class _TimerPageState extends State<TimerPage> {
     }
   }
 
-  void _onCanceled() {
-    print(_duration);
-    print("on Canceled");
+  Future<void> _cancelService(BuildContext context) async {
+    FlutterForegroundTask.stopService();
+    await _decCoins();
+    setState(() => _isRunning = false);
+    Navigator.of(context).pop();
+  }
+
+  Future<void> _onCanceled(BuildContext context) async {
+    await QuickAlert.show(
+      context: context,
+      type: QuickAlertType.error,
+      title: "اخطار",
+      text:
+          'فقط ${(_remaining! / 60).toInt()} دقیقه مانده, آیا از این کار اطمینان دارید؟',
+      confirmBtnText: "توقف",
+      confirmBtnColor: Colors.red.shade300,
+      onConfirmBtnTap: () {
+        _cancelService(context);
+      },
+    );
   }
 
   void _resetTask() {
@@ -288,70 +296,81 @@ class _TimerPageState extends State<TimerPage> {
           }
         },
         child: Scaffold(
-            appBar: Navbar("میز  تمرکز"),
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ListBody(
-                  children: [
-                    (!_isRunning)
-                        ? TimeSelector(
-                            callback: (value) {
-                              setState(() {
-                                _duration = value;
-                              });
-                            },
-                          )
-                        : ProgressSlider(rem: _remaining, max: _duration * 60),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Infoer(
-                          givenTitle: _title,
-                          onChange: (title, topic) {
+          appBar: AppBar(
+            title: Text("میز    تمر کز", style: appbarTitle),
+            centerTitle: true,
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: brandGradient,
+              ),
+            ),
+            foregroundColor: Colors.white,
+            actions: [
+              Consumer(
+                builder: (context, ref, child) {
+                  return IconButton(
+                    onPressed: () {
+                      ref.read(toggleThemeProvider);
+                    },
+                    icon: (Theme.of(context).brightness == Brightness.dark) ? Icon(Icons.sunny) : Icon(Icons.mode_night),
+                  );
+                },
+              )
+            ],
+          ),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ListBody(
+                children: [
+                  (!_isRunning)
+                      ? TimeSelector(
+                          callback: (value) {
                             setState(() {
-                              _title = title;
-                              _topic = topic;
+                              _duration = value;
                             });
                           },
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _buildContentView(),
-                      ],
-                    )
-                  ],
-                )
-              ],
-            ),
-            bottomNavigationBar: Container(
-              height: 80,
-              color: Colors.teal.shade50,
-              padding: EdgeInsets.all(0),
+                        )
+                      : ProgressSlider(rem: _remaining, max: _duration * 60),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Infoer(
+                        givenTitle: _title,
+                        onChange: (title, topic) {
+                          setState(() {
+                            _title = title;
+                            _topic = topic;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildContentView(),
+                    ],
+                  )
+                ],
+              )
+            ],
+          ),
+          bottomNavigationBar: BottomAppBar(
+              height: 65,
+              // clipBehavior: Clip.antiAlias,
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   NotesTool(),
-                  TextButton(
-                      onPressed: () {},
-                      child: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.note_add),
-                          Text("ماشین حساب", style: TextStyle(fontSize: 14)),
-                        ],
-                      )),
+                  ToolButton(
+                      icon: Icons.calculate, label: "Calc", onPressed: () {}),
                 ],
-              ),
-            )),
+              )),
+        ),
       ),
     );
   }
@@ -383,7 +402,7 @@ class _TimerPageState extends State<TimerPage> {
                       onPressed: _startClicked)
                   : const Text(""))
               : buttonBuilder('توقف', Colors.red.shade300,
-                  onPressed: _stopForegroundTask),
+                  onPressed: () => _onCanceled(context)),
         ],
       ),
     );

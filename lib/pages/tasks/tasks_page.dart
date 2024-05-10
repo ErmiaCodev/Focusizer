@@ -32,7 +32,7 @@ class TasksPage extends StatelessWidget {
                         backgroundColor: Colors.teal.shade300,
                         foregroundColor: Colors.white,
                         onPressed: () {
-                          Navigator.of(context).pushNamed('/tasks/add');
+                          Navigator.of(context).popAndPushNamed('/timer');
                         },
                       )
                     ],
@@ -63,7 +63,8 @@ class TasksPage extends StatelessWidget {
               return SliverList(
                 delegate: SliverChildListDelegate([
                   ...box.values.map((task) {
-                    return TaskBox(task: task);
+                    final index = box.values.toList().indexOf(task);
+                    return TaskBox(task: task, index: index);
                   })
                 ]),
               );

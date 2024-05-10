@@ -12,14 +12,17 @@ import '/store/theme.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({Key? key}) : super(key: key);
+
   // final _auth = AuthService();
 
   void _deleteHiveData() async {
-    final tasksBox =  Hive.box<Task>(tasksBoxName);
+    final tasksBox = Hive.box<Task>(tasksBoxName);
     final notesBox = Hive.box<Note>(notesBoxName);
+    final coinsBox = Hive.box(coinsBoxName);
 
     tasksBox.clear();
     notesBox.clear();
+    coinsBox.clear();
   }
 
   Future<void> _onLogout(BuildContext context, WidgetRef ref) async {
@@ -33,10 +36,8 @@ class ProfilePage extends StatelessWidget {
       Navigator.pop(context);
     }
 
-    Navigator.of(context)
-        .pushReplacementNamed('/auth/login');
+    Navigator.of(context).pushReplacementNamed('/auth/login');
   }
-
 
   Future<void> _onThemeToggle(BuildContext context, WidgetRef ref) async {
     final c = await ref.read(toggleThemeProvider);
@@ -53,51 +54,53 @@ class ProfilePage extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Consumer(
-                builder: (context, ref, child) {
-                  final user = ref.read(userProvider);
+                padding: const EdgeInsets.all(8.0),
+                child: Consumer(
+                  builder: (context, ref, child) {
+                    final user = ref.read(userProvider);
 
-                  return Column(
-                    children: [
-                      Text(
-                        user.name,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline6
-                            ?.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FloatingActionButton.extended(
-                            onPressed: () => _onThemeToggle(context, ref),
-                            heroTag: 'follow',
-                            elevation: 0,
-                            backgroundColor: Colors.indigo.shade300,
-                            foregroundColor: Colors.white,
-                            label: const Text("حالت شب", style: normTextStyle),
-                            icon: const Icon(Icons.nightlight),
-                          ),
-                          const SizedBox(width: 16.0),
-                          FloatingActionButton.extended(
-                            onPressed: () => _onLogout(context, ref),
-                            heroTag: 'logout',
-                            elevation: 0,
-                            backgroundColor: Colors.red.shade300,
-                            label: const Text("خروج", style: normTextStyle),
-                            icon: const Icon(Icons.exit_to_app),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      const _ProfileInfoRow()
-                    ],
-                  );
-                },
-              )
-            ),
+                    return Column(
+                      children: [
+                        Text(
+                          user.name,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            FloatingActionButton.extended(
+                              onPressed: () => _onThemeToggle(context, ref),
+                              heroTag: 'follow',
+                              elevation: 0,
+                              backgroundColor: (Theme.of(context).brightness == Brightness.dark) ? Colors.orange.shade300 : Colors.indigo.shade300,
+                              foregroundColor: (Theme.of(context).brightness == Brightness.dark) ? Colors.black : Colors.white,
+                              label: Text(
+                                (Theme.of(context).brightness == Brightness.dark) ? "حالت روز" : "حالت شب",
+                                style: normTextStyle,
+                              ),
+                              icon: const Icon(Icons.nightlight),
+                            ),
+                            const SizedBox(width: 16.0),
+                            FloatingActionButton.extended(
+                              onPressed: () => _onLogout(context, ref),
+                              heroTag: 'logout',
+                              elevation: 0,
+                              backgroundColor: Colors.red.shade300,
+                              label: const Text("خروج", style: normTextStyle),
+                              icon: const Icon(Icons.exit_to_app),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        const _ProfileInfoRow()
+                      ],
+                    );
+                  },
+                )),
           ),
         ],
       )),
@@ -116,12 +119,6 @@ class ProfilePage extends StatelessWidget {
 class _ProfileInfoRow extends StatelessWidget {
   const _ProfileInfoRow({Key? key}) : super(key: key);
 
-  final List<ProfileInfoItem> _items = const [
-    ProfileInfoItem("تسک ها", 0),
-    ProfileInfoItem("یاداشت ها", 0),
-    ProfileInfoItem("فایل ها", 0),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -129,15 +126,67 @@ class _ProfileInfoRow extends StatelessWidget {
       constraints: const BoxConstraints(maxWidth: 400),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: _items
-            .map((item) => Expanded(
-                    child: Row(
-                  children: [
-                    if (_items.indexOf(item) != 0) const VerticalDivider(),
-                    Expanded(child: _singleItem(context, item)),
-                  ],
-                )))
-            .toList(),
+        children: [
+          Expanded(
+            child: Row(
+              children: [
+                ValueListenableBuilder(
+                  valueListenable: Hive.box<Task>(tasksBoxName).listenable(),
+                  builder: (context, Box<Task> box, child) {
+                    if (box.isEmpty) {
+                      return Expanded(
+                        child: _singleItem(
+                          context,
+                          ProfileInfoItem("پروسه ها", 0),
+                        ),
+                      );
+                    }
+
+                    return Expanded(
+                      child: _singleItem(
+                        context,
+                        ProfileInfoItem("پروسه ها", box.values.length),
+                      ),
+                    );
+                  },
+                ),
+                VerticalDivider(),
+                ValueListenableBuilder(
+                  valueListenable: Hive.box<Note>(notesBoxName).listenable(),
+                  builder: (context, Box<Note> box, child) {
+                    if (box.isEmpty) {
+                      return Expanded(
+                        child: _singleItem(
+                          context,
+                          ProfileInfoItem("یاداشت ها", 0),
+                        ),
+                      );
+                    }
+
+                    return Expanded(
+                      child: _singleItem(
+                        context,
+                        ProfileInfoItem("یاداشت ها", box.values.length),
+                      ),
+                    );
+                  },
+                ),
+                VerticalDivider(),
+                ValueListenableBuilder(
+                  valueListenable: Hive.box(coinsBoxName).listenable(),
+                  builder: (context, Box box, child) {
+                    return Expanded(
+                      child: _singleItem(
+                        context,
+                        ProfileInfoItem("سکه ها", box.get('coins') ?? 0),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
@@ -166,6 +215,7 @@ class _ProfileInfoRow extends StatelessWidget {
 class ProfileInfoItem {
   final String title;
   final int value;
+
   const ProfileInfoItem(this.title, this.value);
 }
 
