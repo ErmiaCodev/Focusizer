@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:taskizer/components/appbar/navbar.dart';
+import 'package:taskizer/components/button/circle_btn.dart';
 import 'package:taskizer/constants/db.dart';
 import 'package:taskizer/models/task.dart';
 import 'package:taskizer/pages/timer/infoer/infoer.dart';
@@ -280,6 +281,33 @@ class _TimerPageState extends State<TimerPage> {
     });
   }
 
+  Widget _buildCtrl(BuildContext context) {
+    if (_isRunning) {
+      return CircleButton(
+        bgColor: Colors.red.shade300,
+        color: Colors.white,
+        callback: () => _onCanceled(context),
+        icon: Icons.pause,
+      );
+    }
+
+    if (_title == '' || _topic == null) {
+      return CircleButton(
+        bgColor: Colors.blueGrey.shade400,
+        color: Colors.white,
+        callback: () {},
+        icon: Icons.play_arrow,
+      );
+    }
+
+    return CircleButton(
+      bgColor: Colors.green.shade300,
+      color: Colors.white,
+      callback: () => _startClicked(),
+      icon: Icons.play_arrow,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return WithForegroundTask(
@@ -351,32 +379,37 @@ class _TimerPageState extends State<TimerPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildContentView(),
-                    ],
-                  )
                 ],
               )
             ],
           ),
-          bottomNavigationBar: BottomAppBar(
-            color: Colors.transparent,
-            height: 80,
+          bottomNavigationBar: Container(
+            height: 85,
             padding: EdgeInsets.all(0),
             // clipBehavior: Clip.antiAlias,
             child: Stack(
-              alignment: Alignment.bottomCenter,
+              alignment: Alignment.topCenter,
               children: [
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  child: Container(
+                    height: 60,
+                    color: Colors.teal.shade50,
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  child: _buildCtrl(context),
+                ),
                 Positioned(
                   top: 0,
                   bottom: 0,
                   right: 0,
                   left: 0,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       NotesTool(),
                       ToolButton(
@@ -415,13 +448,13 @@ class _TimerPageState extends State<TimerPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          (!_isRunning)
-              ? ((_duration > 0 && _title != "" && _topic != null)
-                  ? buttonBuilder('شروع!', Colors.teal.shade300,
-                      onPressed: _startClicked)
-                  : const Text(""))
-              : buttonBuilder('توقف', Colors.red.shade300,
-                  onPressed: () => _onCanceled(context)),
+          // (!_isRunning)
+          //     ? ((_duration > 0 && _title != "" && _topic != null)
+          //         ? buttonBuilder('شروع!', Colors.teal.shade300,
+          //             onPressed: _startClicked)
+          //         : const Text(""))
+          //     : buttonBuilder('توقف', Colors.red.shade300,
+          //         onPressed: () => _onCanceled(context)),
         ],
       ),
     );

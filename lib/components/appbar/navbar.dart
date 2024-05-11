@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:taskizer/store/theme.dart';
 import '/styles/global.dart';
 
 TextStyle appbarTitle = const TextStyle(
@@ -22,6 +24,20 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       foregroundColor: Colors.white,
+      actions: [
+        Consumer(
+          builder: (context, ref, child) {
+            return IconButton(
+              onPressed: () {
+                ref.read(toggleThemeProvider);
+              },
+              icon: (Theme.of(context).brightness == Brightness.dark)
+                  ? Icon(Icons.sunny)
+                  : Icon(Icons.mode_night),
+            );
+          },
+        )
+      ],
     );
   }
 

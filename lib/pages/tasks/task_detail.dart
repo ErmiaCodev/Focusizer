@@ -13,25 +13,25 @@ class TaskDetailPage extends StatelessWidget {
 
   final Task task;
 
-  Widget buildProgress() {
+  Widget buildProgress(BuildContext context) {
     final slider = SleekCircularSlider(
         min: 0,
         max: task.duration.toDouble(),
         initialValue: task.duration.toDouble(),
         appearance: CircularSliderAppearance(
-            size: 200,
+            size: 260,
             startAngle: 120,
             angleRange: 300,
             animationEnabled: true,
             customColors: CustomSliderColors(
               hideShadow: true,
-              trackColor: Colors.green.shade200,
-              dotColor: Color(0XFFFAFAFA),
-              progressBarColor: Colors.teal.shade300,
+              trackColor: (Theme.of(context).colorScheme.brightness == Brightness.dark) ? Colors.green.shade300 :  Colors.green.shade200,
+              dotColor: Theme.of(context).colorScheme.secondary,
+              progressBarColor: (Theme.of(context).colorScheme.brightness == Brightness.dark) ? Colors.teal.shade400 : Colors.teal.shade300,
             ),
             customWidths: CustomSliderWidths(
-              trackWidth: 5,
-              progressBarWidth: 15,
+              trackWidth: 8,
+              progressBarWidth: 18,
               handlerSize: 4,
             )),
         innerWidget: (double value) {
@@ -44,8 +44,8 @@ class TaskDetailPage extends StatelessWidget {
                   "${task.duration} min",
                   textDirection: TextDirection.ltr,
                   style: TextStyle(
-                      color: Colors.green.shade600,
-                      fontSize: 40,
+                      color: (Theme.of(context).colorScheme.brightness == Brightness.dark) ? Colors.green.shade50 : Colors.green.shade700,
+                      fontSize: 50,
                       fontWeight: FontWeight.bold),
                 ),
               )
@@ -56,7 +56,7 @@ class TaskDetailPage extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.teal.shade50,
+        color: (Theme.of(context).colorScheme.brightness == Brightness.dark) ? Colors.blueGrey.shade700 : Colors.green.shade50,
       ),
       child: slider,
     );
@@ -73,7 +73,7 @@ class TaskDetailPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SizedBox(height: 20),
-              buildProgress(),
+              buildProgress(context),
               SizedBox(height: 40),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -81,14 +81,19 @@ class TaskDetailPage extends StatelessWidget {
                 children: [
                   Text("مدت پروسه", style: titleStyle),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical:  8, horizontal: 12),
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(30)),
-                        color: Colors.blue.shade100
+                        color: Colors.blue.shade100),
+                    child: Text(
+                      "${task.duration} دقیقه",
+                      style: normTextStyle.copyWith(
+                        color: (Theme.of(context).brightness == Brightness.dark)
+                            ? Colors.blue.shade800
+                            : Colors.grey.shade900,
+                      ),
                     ),
-                    child: Text("${task.duration} دقیقه", style: normTextStyle),
                   )
-
                 ],
               ),
               SizedBox(height: 10),
@@ -98,12 +103,18 @@ class TaskDetailPage extends StatelessWidget {
                 children: [
                   Text("موضوع", style: titleStyle),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical:  8, horizontal: 12),
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                      color: Colors.red.shade100
+                        borderRadius: BorderRadius.all(Radius.circular(30)),
+                        color: Colors.red.shade100),
+                    child: Text(
+                      "${topicsMap[task.topic ?? 'nan']}",
+                      style: normTextStyle.copyWith(
+                        color: (Theme.of(context).brightness == Brightness.dark)
+                            ? Colors.red.shade800
+                            : Colors.grey.shade900,
+                      ),
                     ),
-                    child: Text("${topicsMap[task.topic ?? 'nan']}", style: normTextStyle),
                   )
                 ],
               ),
@@ -114,12 +125,18 @@ class TaskDetailPage extends StatelessWidget {
                 children: [
                   Text("ساعت", style: titleStyle),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical:  8, horizontal: 12),
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(30)),
-                        color: Colors.green.shade100
+                        color: Colors.green.shade100),
+                    child: Text(
+                      "${task.date.hour}:${task.date.minute}",
+                      style: normTextStyle.copyWith(
+                        color: (Theme.of(context).brightness == Brightness.dark)
+                            ? Colors.green.shade700
+                            : Colors.grey.shade900,
+                      ),
                     ),
-                    child: Text("${task.date.hour}:${task.date.minute}", style: normTextStyle)
                   )
                 ],
               ),

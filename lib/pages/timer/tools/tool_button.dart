@@ -16,8 +16,8 @@ class ToolButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 63,
-      width: 110,
+      height: 55,
+      width: 92,
       child: FloatingActionButton(
         heroTag: 'action_btn_$label',
         backgroundColor: Colors.teal.shade300,
@@ -26,9 +26,9 @@ class ToolButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(icon, color: Colors.white, size: 35),
+            Icon(icon, color: Colors.white, size: 30),
             SizedBox(width: 4),
-            Text(label, style: normTextStyle.copyWith(fontWeight: FontWeight.bold, color: Colors.white))
+            Text(label, style: normTextStyle.copyWith(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white))
           ],
         ),
       ),
