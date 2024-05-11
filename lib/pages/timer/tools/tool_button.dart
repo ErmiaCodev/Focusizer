@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taskizer/styles/global.dart';
 
 class ToolButton extends StatelessWidget {
   const ToolButton({
@@ -15,31 +16,22 @@ class ToolButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
-      width: 70,
-      child: OverflowBox(
-          maxHeight: 200,
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            height: 75,
-            width: 20,
-            child: FloatingActionButton.large(
-              heroTag: "b_action_$label",
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.teal.shade400,
-              onPressed: () => onPressed(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(icon),
-                  SizedBox(height: 5),
-                  Text(label,
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
-                ],
-              ),
-            ),
-          )),
+      height: 63,
+      width: 110,
+      child: FloatingActionButton(
+        heroTag: 'action_btn_$label',
+        backgroundColor: Colors.teal.shade300,
+        onPressed: () => onPressed(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(icon, color: Colors.white, size: 35),
+            SizedBox(width: 4),
+            Text(label, style: normTextStyle.copyWith(fontWeight: FontWeight.bold, color: Colors.white))
+          ],
+        ),
+      ),
     );
   }
 }

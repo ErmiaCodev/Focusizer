@@ -239,14 +239,15 @@ class _TimerPageState extends State<TimerPage> {
         duration: _duration));
     _addCoins();
 
-    if (Navigator.of(context).canPop()) {
-      Navigator.popUntil(context, ModalRoute.withName('/timer'));
+    setState(() {
+      _title = "";
+      _topic = null;
+      _duration = 5;
+      _isRunning = false;
+    });
 
-      if (Navigator.of(context).canPop()) {
-        Navigator.popUntil(context, ModalRoute.withName('/'));
-      } else {
-        Navigator.pushNamed(context, "/");
-      }
+    if (ModalRoute.of(context)?.settings.name != "/timer") {
+      Navigator.popUntil(context, ModalRoute.withName('/timer'));
     }
   }
 
@@ -312,7 +313,9 @@ class _TimerPageState extends State<TimerPage> {
                     onPressed: () {
                       ref.read(toggleThemeProvider);
                     },
-                    icon: (Theme.of(context).brightness == Brightness.dark) ? Icon(Icons.sunny) : Icon(Icons.mode_night),
+                    icon: (Theme.of(context).brightness == Brightness.dark)
+                        ? Icon(Icons.sunny)
+                        : Icon(Icons.mode_night),
                   );
                 },
               )
@@ -360,16 +363,32 @@ class _TimerPageState extends State<TimerPage> {
             ],
           ),
           bottomNavigationBar: BottomAppBar(
-              height: 65,
-              // clipBehavior: Clip.antiAlias,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  NotesTool(),
-                  ToolButton(
-                      icon: Icons.calculate, label: "Calc", onPressed: () {}),
-                ],
-              )),
+            color: Colors.transparent,
+            height: 80,
+            padding: EdgeInsets.all(0),
+            // clipBehavior: Clip.antiAlias,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Positioned(
+                  top: 0,
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      NotesTool(),
+                      ToolButton(
+                          icon: Icons.calculate,
+                          label: "حساب",
+                          onPressed: () {}),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
