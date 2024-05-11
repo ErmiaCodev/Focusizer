@@ -4,13 +4,16 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:taskizer/constants/db.dart';
 import 'package:taskizer/models/note.dart';
 import 'package:taskizer/models/task.dart';
+import 'package:taskizer/pages/splash/splash.dart';
 import '/app.dart';
 import '/store/auth.dart';
 import '/store/theme.dart';
 
 
 Future<void> main() async {
-  runApp(const Center(child: CircularProgressIndicator()));
+  runApp(MaterialApp(
+    home: FutureSplash(),
+  ));
 
   final container = ProviderContainer();
   await container.read(getUserProvider.future);
