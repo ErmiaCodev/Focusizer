@@ -28,7 +28,7 @@ class HomePage extends ConsumerWidget {
     return Guard(
       child: Scaffold(
           appBar: AppBar(
-            title: Text("خانه", style: appbarTitle),
+            title: Text("تمرکز یار", style: appbarTitle),
             centerTitle: true,
             flexibleSpace: Container(
               decoration: BoxDecoration(
