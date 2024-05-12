@@ -108,7 +108,7 @@ class TaskDetailPage extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(30)),
                         color: Colors.red.shade100),
                     child: Text(
-                      "${topicsMap[task.topic ?? 'nan']}",
+                      "${topicsMap[task.topic] ?? 'بدون موضوع'}",
                       style: normTextStyle.copyWith(
                         color: (Theme.of(context).brightness == Brightness.dark)
                             ? Colors.red.shade800
@@ -123,7 +123,7 @@ class TaskDetailPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("ساعت", style: titleStyle),
+                  Text("ساعت شروع", style: titleStyle),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                     decoration: BoxDecoration(
@@ -134,6 +134,28 @@ class TaskDetailPage extends StatelessWidget {
                       style: normTextStyle.copyWith(
                         color: (Theme.of(context).brightness == Brightness.dark)
                             ? Colors.green.shade700
+                            : Colors.grey.shade900,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 14),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("تاریخ", style: titleStyle),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(30)),
+                        color: Colors.amber.shade100),
+                    child: Text(
+                      "${task.date.year}/${task.date.month}/${task.date.day}",
+                      style: normTextStyle.copyWith(
+                        color: (Theme.of(context).brightness == Brightness.dark)
+                            ? Colors.amber.shade900
                             : Colors.grey.shade900,
                       ),
                     ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:taskizer/constants/db.dart';
 import 'package:taskizer/models/note.dart';
+import 'package:taskizer/pages/notes/note_detail.dart';
 import 'package:taskizer/pages/timer/tools/note_preview.dart';
 import 'package:taskizer/pages/timer/tools/tool_button.dart';
 
@@ -19,10 +20,25 @@ class _NotesToolState extends State<NotesTool> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          // insetPadding: EdgeInsets.zero,
-          // clipBehavior: Clip.antiAliasWithSaveLayer,
-          // clipBehavior: Clip.antiAlias,
-            title: Text("یاداشت ها"),
+            // insetPadding: EdgeInsets.zero,
+            // clipBehavior: Clip.antiAliasWithSaveLayer,
+            // clipBehavior: Clip.antiAlias,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("یاداشت ها"),
+                FloatingActionButton.small(
+                  backgroundColor: Colors.teal.shade300,
+                  foregroundColor: Colors.white,
+                  shape: CircleBorder(),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed("/notes/add");
+                  },
+                  child: Icon(Icons.add),
+                )
+              ],
+            ),
             content: ValueListenableBuilder(
               valueListenable: Hive.box<Note>(notesBoxName).listenable(),
               builder: (context, Box<Note> box, child) {
@@ -38,20 +54,19 @@ class _NotesToolState extends State<NotesTool> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           ...box.values.map((note) {
-                            return TextButton(
+                            return ElevatedButton(
                               onPressed: () {
                                 // Navigator.of(context).pop();
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>
-                                        NotePreviewScreen(note: note)));
+                                        NoteDetailPage(note: note)));
                               },
                               child: Text(note.name),
                             );
                           }),
                         ],
                       ),
-                    )
-                );
+                    ));
               },
             ));
       },

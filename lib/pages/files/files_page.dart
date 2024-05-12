@@ -3,8 +3,10 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:taskizer/components/appbar/navbar.dart';
 import 'package:taskizer/components/guard/guard.dart';
 import 'package:taskizer/constants/db.dart';
+import 'package:taskizer/models/file.dart';
 import 'package:taskizer/models/note.dart';
 import 'package:taskizer/models/task.dart';
+import 'package:taskizer/pages/files/widgets/file_item.dart';
 import 'package:taskizer/pages/notes/widgets/note_item.dart';
 import 'package:taskizer/styles/global.dart';
 
@@ -19,8 +21,8 @@ class FilesPage extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.all(20),
         child: ValueListenableBuilder(
-          valueListenable: Hive.box<Note>(notesBoxName).listenable(),
-          builder: (context, Box<Note> box, _) {
+          valueListenable: Hive.box<UserFile>(filesBoxName).listenable(),
+          builder: (context, Box<UserFile> box, _) {
             if (box.values.isEmpty) {
               return const Center(
                 child: Text(
@@ -34,8 +36,8 @@ class FilesPage extends StatelessWidget {
             return ListView.builder(
               itemCount: box.values.length,
               itemBuilder: (context, index) {
-                Note note = box.values.elementAt(index);
-                return NoteItem(note: note, index: index);
+                UserFile file = box.values.elementAt(index);
+                return FileItem(file: file, index: index);
               },
             );
           },
@@ -44,13 +46,7 @@ class FilesPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         heroTag: 'filesList',
         onPressed: () {
-          const snackBar = SnackBar(
-            content: Text('بزودی!!',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            backgroundColor: Colors.amber,
-          );
-
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          Navigator.of(context).pushNamed("/files/add");
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.teal.shade300,

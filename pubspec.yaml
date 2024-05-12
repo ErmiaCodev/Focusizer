@@ -47,6 +47,7 @@ dependencies:
   flutter_foreground_task: ^6.2.0
   quickalert: ^1.1.0
   easy_splash_screen:
+  file_picker: ^8.0.3
 
 
 dev_dependencies:

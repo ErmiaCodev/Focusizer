@@ -7,6 +7,7 @@ import 'package:quickalert/quickalert.dart';
 import 'package:taskizer/components/appbar/navbar.dart';
 import 'package:taskizer/components/button/circle_btn.dart';
 import 'package:taskizer/constants/db.dart';
+import 'package:taskizer/constants/timer.dart';
 import 'package:taskizer/models/task.dart';
 import 'package:taskizer/pages/timer/infoer/infoer.dart';
 import 'package:taskizer/pages/timer/tools/notes_tool.dart';
@@ -52,7 +53,7 @@ class _TimerPageState extends State<TimerPage> {
     }
 
     final NotificationPermission notificationPermissionStatus =
-        await FlutterForegroundTask.checkNotificationPermission();
+    await FlutterForegroundTask.checkNotificationPermission();
     if (notificationPermissionStatus != NotificationPermission.granted) {
       await FlutterForegroundTask.requestNotificationPermission();
     }
@@ -65,9 +66,10 @@ class _TimerPageState extends State<TimerPage> {
         channelId: 'foreground_service',
         channelName: 'Focusing',
         channelDescription:
-            'This notification appears when the foreground service is running.',
+        'This notification appears when the foreground service is running.',
         channelImportance: NotificationChannelImportance.LOW,
         priority: NotificationPriority.LOW,
+        visibility: NotificationVisibility.VISIBILITY_PUBLIC,
         iconData: const NotificationIconData(
           resType: ResourceType.mipmap,
           resPrefix: ResourcePrefix.ic,
@@ -89,7 +91,7 @@ class _TimerPageState extends State<TimerPage> {
       foregroundTaskOptions: const ForegroundTaskOptions(
         interval: 1000,
         isOnceEvent: false,
-        autoRunOnBoot: true,
+        autoRunOnBoot: false,
         allowWakeLock: true,
         allowWifiLock: true,
       ),
@@ -156,8 +158,7 @@ class _TimerPageState extends State<TimerPage> {
         if (data == 'onNotificationPressed') {
           Navigator.of(context).pushNamed('/');
         } else if (data == "onCanceled") {
-          _cancelService(context);
-          // _onCanceled(context);
+          _cancelService(context, true);
         } else if (data == "onFinished") {
           FlutterForegroundTask.stopService();
           setState(() => _isRunning = false);
@@ -236,52 +237,69 @@ class _TimerPageState extends State<TimerPage> {
     tasksBox.add(Task(
         name: (_title == "") ? "پروسه جدید" : _title,
         topic: _topic,
-        date: DateTime.now(),
+        date: DateTime.now().subtract(Duration(minutes: _duration)),
         duration: _duration));
     _addCoins();
 
-    setState(() {
-      _title = "";
-      _topic = null;
-      _duration = 5;
-      _isRunning = false;
-    });
 
-    if (ModalRoute.of(context)?.settings.name != "/timer") {
+    if (ModalRoute
+        .of(context)
+        ?.settings
+        .name != "/timer") {
       Navigator.popUntil(context, ModalRoute.withName('/timer'));
     }
   }
 
-  Future<void> _cancelService(BuildContext context) async {
+  Future<void> _cancelService(BuildContext context, bool fine) async {
     FlutterForegroundTask.stopService();
-    await _decCoins();
     setState(() => _isRunning = false);
-    Navigator.of(context).pop();
+    if (fine) {
+      await _decCoins();
+    }
   }
 
   Future<void> _onCanceled(BuildContext context) async {
+    if ((_duration * 60) - _remaining! < max_safe_secs) {
+      await _cancelService(context, false);
+      _resetTask();
+      return;
+    }
+
     await QuickAlert.show(
       context: context,
       type: QuickAlertType.error,
       title: "اخطار",
       text:
-          'فقط ${(_remaining! / 60).toInt()} دقیقه مانده, آیا از این کار اطمینان دارید؟',
+      'فقط ${(_remaining! / 60)
+          .toInt()} دقیقه مانده, آیا از این کار اطمینان دارید؟',
       confirmBtnText: "توقف",
       confirmBtnColor: Colors.red.shade300,
       onConfirmBtnTap: () {
-        _cancelService(context);
+        _cancelService(context, true);
+        Navigator.of(context).pop();
       },
     );
   }
 
   void _resetTask() {
     setState(() {
-      _remaining = 0;
+      _title = "";
+      _topic = null;
+      _duration = 5;
       _isRunning = false;
     });
   }
 
   Widget _buildCtrl(BuildContext context) {
+    if (_isRunning && ((_duration * 60) - _remaining!) < max_safe_secs) {
+      return CircleButton(
+        bgColor: Colors.amber.shade300,
+        color: Colors.grey.shade600,
+        callback: () => _onCanceled(context),
+        icon: Icons.pause,
+      );
+    }
+
     if (_isRunning) {
       return CircleButton(
         bgColor: Colors.red.shade300,
@@ -341,7 +359,9 @@ class _TimerPageState extends State<TimerPage> {
                     onPressed: () {
                       ref.read(toggleThemeProvider);
                     },
-                    icon: (Theme.of(context).brightness == Brightness.dark)
+                    icon: (Theme
+                        .of(context)
+                        .brightness == Brightness.dark)
                         ? Icon(Icons.sunny)
                         : Icon(Icons.mode_night),
                   );
@@ -357,12 +377,12 @@ class _TimerPageState extends State<TimerPage> {
                 children: [
                   (!_isRunning)
                       ? TimeSelector(
-                          callback: (value) {
-                            setState(() {
-                              _duration = value;
-                            });
-                          },
-                        )
+                    callback: (value) {
+                      setState(() {
+                        _duration = value;
+                      });
+                    },
+                  )
                       : ProgressSlider(rem: _remaining),
                   const SizedBox(height: 20),
                   Row(
@@ -396,7 +416,10 @@ class _TimerPageState extends State<TimerPage> {
                   left: 0,
                   child: Container(
                     height: 60,
-                    color: Colors.teal.shade50,
+                    color: (Theme
+                        .of(context)
+                        .brightness == Brightness.dark) ? Colors.blueGrey
+                        .shade700 : Colors.teal.shade50,
                   ),
                 ),
                 Positioned(
@@ -431,32 +454,5 @@ class _TimerPageState extends State<TimerPage> {
     if (_duration > 0) {
       _startForegroundTask();
     }
-  }
-
-  Widget _buildContentView() {
-    buttonBuilder(String text, Color bgColor, {VoidCallback? onPressed}) {
-      return FloatingActionButton.extended(
-        backgroundColor: bgColor,
-        foregroundColor: Colors.white,
-        onPressed: onPressed,
-        label: Text(text,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-      );
-    }
-
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // (!_isRunning)
-          //     ? ((_duration > 0 && _title != "" && _topic != null)
-          //         ? buttonBuilder('شروع!', Colors.teal.shade300,
-          //             onPressed: _startClicked)
-          //         : const Text(""))
-          //     : buttonBuilder('توقف', Colors.red.shade300,
-          //         onPressed: () => _onCanceled(context)),
-        ],
-      ),
-    );
   }
 }

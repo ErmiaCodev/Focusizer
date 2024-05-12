@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:taskizer/pages/files/file_add.dart';
 import 'package:taskizer/pages/files/files_page.dart';
 import 'package:taskizer/pages/notes/note_add.dart';
 import 'package:taskizer/pages/notes/notes_page.dart';
@@ -57,6 +58,7 @@ class App extends ConsumerWidget {
         '/notes': (context) => const NotesPage(),
         '/notes/add': (context) => AddNote(),
         '/files': (context) => const FilesPage(),
+        '/files/add': (context) => FileAddPage(),
         '/tasks': (context) => const TasksPage(),
         '/timer': (context) => const TimerPage(),
         '/auth/login': (context) => const LoginPage(),

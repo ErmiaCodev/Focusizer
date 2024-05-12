@@ -10,8 +10,12 @@ class UserFile extends HiveObject {
   @HiveField(1)
   String path;
 
+  @HiveField(2)
+  String type;
+
   UserFile({
     required this.name,
     required this.path,
+    required this.type,
   });
 }

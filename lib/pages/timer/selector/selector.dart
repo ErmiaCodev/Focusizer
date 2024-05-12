@@ -21,7 +21,7 @@ class _SelectorState extends State<TimeSelector> {
     final slider = SleekCircularSlider(
       min: 0,
       max: max_mins.toDouble(),
-      initialValue: 5,
+      initialValue: 5.5,
       appearance: CircularSliderAppearance(
           size: 260,
           startAngle: 120,
@@ -45,7 +45,7 @@ class _SelectorState extends State<TimeSelector> {
             Container(
               padding: EdgeInsets.only(top: 8),
               child: Text(
-                "${value.toInt()} دقیقه",
+                "${_value} دقیقه",
                 textDirection: TextDirection.rtl,
                 style: TextStyle(
                     color: (Theme.of(context).colorScheme.brightness == Brightness.dark) ? Colors.green.shade50 : Colors.green.shade700,
@@ -56,12 +56,14 @@ class _SelectorState extends State<TimeSelector> {
           ],
         );
       },
-      onChangeEnd: (double weight) {
+      onChange: (weight) {
         setState(() {
-          var minutes = max(int.parse(weight.ceil().toString()) - 1, 0);
-          _value = minutes;
-          widget.callback(minutes);
+          var minutes = int.parse(weight.ceil().toString());
+          _value = minutes.toInt();
         });
+      },
+      onChangeEnd: (double weight) {
+        widget.callback(_value);
       },
     );
 
