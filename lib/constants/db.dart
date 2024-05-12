@@ -1,4 +1,4 @@
 const tasksBoxName = 'tasks';
 const notesBoxName = 'notes';
-const projectsBoxName = 'projects';
+const filesBoxName = 'files';
 const coinsBoxName = 'coins';

@@ -234,7 +234,7 @@ class _TimerPageState extends State<TimerPage> {
   void _saveTask() {
     Box<Task> tasksBox = Hive.box<Task>(tasksBoxName);
     tasksBox.add(Task(
-        name: _title,
+        name: (_title == "") ? "پروسه جدید" : _title,
         topic: _topic,
         date: DateTime.now(),
         duration: _duration));
@@ -291,7 +291,7 @@ class _TimerPageState extends State<TimerPage> {
       );
     }
 
-    if (_title == '' || _topic == null) {
+    if (_duration == 0) {
       return CircleButton(
         bgColor: Colors.blueGrey.shade400,
         color: Colors.white,
@@ -363,7 +363,7 @@ class _TimerPageState extends State<TimerPage> {
                             });
                           },
                         )
-                      : ProgressSlider(rem: _remaining, max: _duration * 60),
+                      : ProgressSlider(rem: _remaining),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

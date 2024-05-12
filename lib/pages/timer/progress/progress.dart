@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+import 'package:taskizer/constants/timer.dart';
 
 class ProgressSlider extends StatelessWidget {
-  const ProgressSlider({super.key, required this.rem, required this.max});
+  const ProgressSlider({super.key, required this.rem});
 
   final int? rem;
-  final int max;
 
   @override
   Widget build(BuildContext context) {
     final slider = SleekCircularSlider(
         min: 0,
-        max: max.toDouble(),
+        max: max_mins.toDouble()*60,
         initialValue: rem!.toDouble(),
         appearance: CircularSliderAppearance(
             size: 260,

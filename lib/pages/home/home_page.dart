@@ -48,11 +48,12 @@ class HomePage extends ConsumerWidget {
                         valueListenable: Hive.box(coinsBoxName).listenable(),
                         builder: (context, Box box, child) {
                           return Text("${box.get('coins') ?? 0}",
-                              style: TextStyle(fontSize: 18,
+                              style: TextStyle(
+                                  fontSize: 18,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold));
-                        },),
-
+                        },
+                      ),
                       SizedBox(width: 5),
                       Padding(
                           padding: EdgeInsets.only(bottom: 5),
@@ -61,103 +62,110 @@ class HomePage extends ConsumerWidget {
                                   shape: BoxShape.circle,
                                   color: Colors.yellow.shade500),
                               padding: EdgeInsets.all(2),
-                              child: Icon(Icons.currency_bitcoin, size: 20,
-                                color: Colors.black,))),
+                              child: Icon(
+                                Icons.currency_bitcoin,
+                                size: 20,
+                                color: Colors.black,
+                              ))),
                     ],
                   ))
             ],
             foregroundColor: Colors.white,
             leading: IconButton(
               icon: const Icon(Icons.person),
-              onPressed: () =>
-                  Navigator.of(context)
-                      .push(
-                      MaterialPageRoute(builder: (builder) => ProfilePage())),
+              onPressed: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (builder) => ProfilePage())),
             ),
           ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: 10),
-                  ValueListenableBuilder(
-                    valueListenable: Hive.box<Task>(tasksBoxName).listenable(),
-                    builder: (context, Box<Task> box, child) {
-                      if (box.values.isEmpty) {
+          body: CustomScrollView(
+            slivers: [
+              SliverPadding(
+                padding: EdgeInsets.all(20),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate([
+                    SizedBox(height: 10),
+                    ValueListenableBuilder(
+                      valueListenable:
+                          Hive.box<Task>(tasksBoxName).listenable(),
+                      builder: (context, Box<Task> box, child) {
+                        if (box.values.isEmpty) {
+                          return ItemCard(
+                            color: Colors.teal,
+                            title: "تمرکز کنید!",
+                            note: "کل تسک ها:",
+                            timestamp: "هیچی",
+                            onTap: () {
+                              Navigator.of(context).pushNamed('/timer');
+                            },
+                          );
+                        }
+
                         return ItemCard(
                           color: Colors.teal,
                           title: "تمرکز کنید!",
-                          note: "کل تسک ها:",
-                          timestamp: "هیچی",
+                          note: "کل پروسه ها:",
+                          timestamp: "${box.values.length}",
                           onTap: () {
                             Navigator.of(context).pushNamed('/timer');
                           },
                         );
-                      }
-
-                      return ItemCard(
-                        color: Colors.teal,
-                        title: "تمرکز کنید!",
-                        note: "کل پروسه ها:",
-                        timestamp: "${box.values.length}",
-                        onTap: () {
-                          Navigator.of(context).pushNamed('/timer');
-                        },
-                      );
-                    },
-                  ),
-                  SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      const Text(
-                        "سلام ",
-                        style: titleStyle,
-                      ),
-                      Text(
-                        " ${user.name} ",
-                        style: emphesizeStyle,
-                      ),
-                      const Text(
-                        "خوش آومدی!",
-                        style: titleStyle,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 30),
-                  const Column(
-                    children: [
-                      Row(
-                        children: [
-                          FeatureBox(
-                            title: "یاداشت ها",
-                            icon: "assets/icon/first.png",
-                            link: "/notes",
-                          ),
-                          FeatureBox(
-                            title: "فایل ها",
-                            icon: "assets/icon/third.png",
-                            link: "",
-                          ),
-                        ],
-                      ),
-
-                      Row(
-                        children: [
-                          FeatureBox(
-                            title: "پروسه ها",
-                            icon: "assets/icon/more.png",
-                            link: "/tasks",
-                          ),
-                        ],
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
+                      },
+                    ),
+                    SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        const Text(
+                          "سلام ",
+                          style: titleStyle,
+                        ),
+                        Text(
+                          " ${user.name} ",
+                          style: emphesizeStyle,
+                        ),
+                        const Text(
+                          "خوش آومدی!",
+                          style: titleStyle,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 30),
+                    Row(
+                      children: [
+                        FeatureBox(
+                          title: "پروسه ها",
+                          icon: "assets/icon/more.png",
+                          link: "/tasks",
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        FeatureBox(
+                          title: "یاداشت ها",
+                          icon: "assets/icon/first.png",
+                          link: "/notes",
+                        ),
+                        FeatureBox(
+                          title: "فایل ها",
+                          icon: "assets/icon/third.png",
+                          link: "/files",
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        FeatureBox(
+                          title: "فروشگاه",
+                          icon: "assets/storefront.png",
+                          link: "/tasks",
+                        ),
+                      ],
+                    ),
+                  ]),
+                ),
+              )
+            ],
           )),
     );
   }

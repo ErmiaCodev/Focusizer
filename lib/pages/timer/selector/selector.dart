@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+import 'package:taskizer/constants/timer.dart';
 
 class TimeSelector extends StatefulWidget {
   const TimeSelector({required this.callback, super.key});
@@ -19,7 +20,7 @@ class _SelectorState extends State<TimeSelector> {
   Widget build(BuildContext context) {
     final slider = SleekCircularSlider(
       min: 0,
-      max: 30,
+      max: max_mins.toDouble(),
       initialValue: 5,
       appearance: CircularSliderAppearance(
           size: 260,

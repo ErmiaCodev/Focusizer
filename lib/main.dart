@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:taskizer/constants/db.dart';
+import 'package:taskizer/models/file.dart';
 import 'package:taskizer/models/note.dart';
 import 'package:taskizer/models/task.dart';
 import 'package:taskizer/pages/splash/splash.dart';
@@ -26,6 +27,7 @@ Future<void> main() async {
   Hive.registerAdapter<Note>(NoteAdapter());
   await Hive.openBox<Task>(tasksBoxName);
   await Hive.openBox<Note>(notesBoxName);
+  await Hive.openBox<UserFile>(filesBoxName);
   await Hive.openBox(coinsBoxName);
 
   runApp(UncontrolledProviderScope(
