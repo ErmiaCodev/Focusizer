@@ -69,6 +69,11 @@ class MyTaskHandler extends TaskHandler {
     sendPort?.send(_seconds);
 
     _seconds--;
+
+    if ((await FlutterForegroundTask.isAppOnForeground) == false) {
+      FlutterForegroundTask.launchApp();
+      print("FLutter Foreground Task");
+    }
   }
 
   @override

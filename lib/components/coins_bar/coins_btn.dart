@@ -9,7 +9,9 @@ class CoinsBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        Navigator.of(context).pushNamed("/shop");
+        if (ModalRoute.of(context)?.settings.name != "/shop") {
+          Navigator.of(context).pushNamed("/shop");
+        }
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
