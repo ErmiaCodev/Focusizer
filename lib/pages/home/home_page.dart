@@ -101,15 +101,6 @@ class HomePage extends ConsumerWidget {
                   const Row(
                     children: [
                       FeatureBox(
-                        title: "پروسه ها",
-                        icon: "assets/icon/more.png",
-                        link: "/tasks",
-                      ),
-                    ],
-                  ),
-                  const Row(
-                    children: [
-                      FeatureBox(
                         title: "یاداشت ها",
                         icon: "assets/icon/first.png",
                         link: "/notes",
@@ -124,9 +115,24 @@ class HomePage extends ConsumerWidget {
                   const Row(
                     children: [
                       FeatureBox(
+                        title: "پروسه ها",
+                        icon: "assets/icon/more.png",
+                        link: "/tasks",
+                      ),
+                    ],
+                  ),
+                  const Row(
+                    children: [
+                      FeatureBox(
                         title: "فروشگاه",
                         icon: "assets/storefront.png",
                         link: "/shop",
+                      ),
+
+                      FeatureBox(
+                        title: "موسیقی",
+                        icon: "assets/icon/second.png",
+                        link: "/musics",
                       ),
                     ],
                   ),

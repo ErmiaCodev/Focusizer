@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:taskizer/constants/db.dart';
+import 'package:taskizer/models/file.dart';
 import 'package:taskizer/models/note.dart';
 import 'package:taskizer/models/task.dart';
 import 'package:taskizer/styles/global.dart';
@@ -18,7 +19,7 @@ class ProfilePage extends StatelessWidget {
   void _deleteHiveData() async {
     final tasksBox = Hive.box<Task>(tasksBoxName);
     final notesBox = Hive.box<Note>(notesBoxName);
-    final filesBox = Hive.box<Note>(filesBoxName);
+    final filesBox = Hive.box<UserFile>(filesBoxName);
     final coinsBox = Hive.box(coinsBoxName);
 
     tasksBox.clear();

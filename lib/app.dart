@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:taskizer/pages/files/file_add.dart';
 import 'package:taskizer/pages/files/files_page.dart';
+import 'package:taskizer/pages/musics/file_music.dart';
+import 'package:taskizer/pages/musics/musics_page.dart';
 import 'package:taskizer/pages/notes/note_add.dart';
 import 'package:taskizer/pages/notes/notes_page.dart';
 import 'package:taskizer/pages/shop/shop.dart';
@@ -60,6 +62,8 @@ class App extends ConsumerWidget {
         '/notes/add': (context) => AddNote(),
         '/files': (context) => const FilesPage(),
         '/files/add': (context) => FileAddPage(),
+        '/musics': (context) => const MusicsPage(),
+        '/musics/add': (context) => MusicAddPage(),
         '/tasks': (context) => const TasksPage(),
         '/shop': (context) => const ShopPage(),
         '/timer': (context) => const TimerPage(),

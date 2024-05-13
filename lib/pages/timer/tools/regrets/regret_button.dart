@@ -17,7 +17,7 @@ class RegretButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 55,
-      width: 92,
+      width: 100,
       child: FloatingActionButton(
         heroTag: 'regret_btn_$label',
         backgroundColor: Colors.blueGrey.shade400,
@@ -27,7 +27,7 @@ class RegretButton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(icon, color: Colors.white, size: 30),
-            SizedBox(width: 4),
+            const SizedBox(width: 4),
             Text(label, style: normTextStyle.copyWith(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white))
           ],
         ),

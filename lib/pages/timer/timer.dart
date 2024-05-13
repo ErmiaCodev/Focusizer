@@ -4,18 +4,16 @@ import 'dart:isolate';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:quickalert/quickalert.dart';
-import 'package:taskizer/components/appbar/navbar.dart';
-import 'package:taskizer/components/button/circle_btn.dart';
-import 'package:taskizer/constants/db.dart';
-import 'package:taskizer/constants/timer.dart';
-import 'package:taskizer/models/task.dart';
-import 'package:taskizer/pages/timer/infoer/infoer.dart';
-import 'package:taskizer/pages/timer/tools/files_tool.dart';
-import 'package:taskizer/pages/timer/tools/notes_tool.dart';
-import 'package:taskizer/pages/timer/tools/tool_button.dart';
-import 'package:taskizer/pages/timer/tools/toolbar.dart';
-import 'package:taskizer/store/theme.dart';
-import 'package:taskizer/styles/global.dart';
+import 'package:taskizer/pages/timer/player/music_player.dart';
+import '/components/appbar/navbar.dart';
+import '/components/button/circle_btn.dart';
+import '/constants/db.dart';
+import '/constants/timer.dart';
+import '/models/task.dart';
+import '/pages/timer/infoer/infoer.dart';
+import '/pages/timer/tools/toolbar.dart';
+import '/store/theme.dart';
+import '/styles/global.dart';
 
 import './progress/progress.dart';
 import './selector/selector.dart';
@@ -55,7 +53,7 @@ class _TimerPageState extends State<TimerPage> {
     }
 
     final NotificationPermission notificationPermissionStatus =
-    await FlutterForegroundTask.checkNotificationPermission();
+        await FlutterForegroundTask.checkNotificationPermission();
     if (notificationPermissionStatus != NotificationPermission.granted) {
       await FlutterForegroundTask.requestNotificationPermission();
     }
@@ -68,7 +66,7 @@ class _TimerPageState extends State<TimerPage> {
         channelId: 'foreground_service',
         channelName: 'Focusing',
         channelDescription:
-        'This notification appears when the foreground service is running.',
+            'This notification appears when the foreground service is running.',
         channelImportance: NotificationChannelImportance.LOW,
         priority: NotificationPriority.LOW,
         visibility: NotificationVisibility.VISIBILITY_PUBLIC,
@@ -221,7 +219,7 @@ class _TimerPageState extends State<TimerPage> {
   }
 
   Future<void> _addCoins() async {
-    var box = await Hive.openBox(coinsBoxName);
+    var box = await Hive.box(coinsBoxName);
     final current = box.get('coins') ?? 0;
     final newCoins = 5 + (1 * (_duration ~/ 5));
     box.put('coins', current + newCoins);
@@ -244,11 +242,7 @@ class _TimerPageState extends State<TimerPage> {
         duration: _duration));
     _addCoins();
 
-
-    if (ModalRoute
-        .of(context)
-        ?.settings
-        .name != "/timer") {
+    if (ModalRoute.of(context)?.settings.name != "/timer") {
       Navigator.popUntil(context, ModalRoute.withName('/timer'));
     }
   }
@@ -273,8 +267,7 @@ class _TimerPageState extends State<TimerPage> {
       type: QuickAlertType.error,
       title: "اخطار",
       text:
-      'فقط ${(_remaining! / 60)
-          .toInt()} دقیقه مانده, آیا از این کار اطمینان دارید؟',
+          'فقط ${(_remaining! / 60).toInt()} دقیقه مانده, آیا از این کار اطمینان دارید؟',
       confirmBtnText: "توقف",
       confirmBtnColor: Colors.red.shade300,
       onConfirmBtnTap: () {
@@ -355,10 +348,9 @@ class _TimerPageState extends State<TimerPage> {
               ),
             ),
             foregroundColor: Colors.white,
-            leading: (_isRunning) ?IconButton(
-              onPressed: () {},
-              icon:  const Icon(Icons.headphones),
-            ) : null,
+            leading: (_isRunning)
+                ? MusicPlayer()
+                : null,
             actions: [
               Consumer(
                 builder: (context, ref, child) {
@@ -366,9 +358,7 @@ class _TimerPageState extends State<TimerPage> {
                     onPressed: () {
                       ref.read(toggleThemeProvider);
                     },
-                    icon: (Theme
-                        .of(context)
-                        .brightness == Brightness.dark)
+                    icon: (Theme.of(context).brightness == Brightness.dark)
                         ? const Icon(Icons.sunny)
                         : const Icon(Icons.mode_night),
                   );
@@ -384,12 +374,12 @@ class _TimerPageState extends State<TimerPage> {
                 children: [
                   (!_isRunning)
                       ? TimeSelector(
-                    callback: (value) {
-                      setState(() {
-                        _duration = value;
-                      });
-                    },
-                  )
+                          callback: (value) {
+                            setState(() {
+                              _duration = value;
+                            });
+                          },
+                        )
                       : ProgressSlider(rem: _remaining, dur: _duration),
                   const SizedBox(height: 20),
                   Row(
@@ -423,10 +413,9 @@ class _TimerPageState extends State<TimerPage> {
                   left: 0,
                   child: Container(
                     height: 60,
-                    color: (Theme
-                        .of(context)
-                        .brightness == Brightness.dark) ? Colors.blueGrey
-                        .shade700 : Colors.teal.shade50,
+                    color: (Theme.of(context).brightness == Brightness.dark)
+                        ? Colors.blueGrey.shade700
+                        : Colors.teal.shade50,
                   ),
                 ),
                 Positioned(
@@ -438,7 +427,8 @@ class _TimerPageState extends State<TimerPage> {
             ),
           ),
         ),
-      ),);
+      ),
+    );
   }
 
   void _startClicked() {

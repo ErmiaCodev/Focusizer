@@ -92,6 +92,7 @@ flutter:
     - assets/scooter.png
     - assets/building.png
     - assets/storefront.png
+    - assets/coins.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

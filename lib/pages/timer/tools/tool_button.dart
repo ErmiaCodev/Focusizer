@@ -17,7 +17,7 @@ class ToolButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 55,
-      width: 92,
+      width: 100,
       child: FloatingActionButton(
         heroTag: 'action_btn_$label',
         backgroundColor: Colors.teal.shade300,

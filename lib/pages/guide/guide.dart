@@ -25,8 +25,8 @@ class GuidePage extends StatelessWidget {
           ),
           OnboardingPageModel(
             title: 'سکه و امتیاز',
-            description: 'با تمرکز بروی یک پروسه متناسب با زمان پروسه سکه دریافت کنید و قابلیت های برنامه رو باز کنید',
-            imageUrl: 'assets/storefront.png',
+            description: 'با تمرکز  سکه دریافت کنید و قابلیت های برنامه رو باز کنید',
+            imageUrl: 'assets/coins.png',
             bgColor: const Color(0xfffeae4f),
           ),
           OnboardingPageModel(
@@ -41,12 +41,6 @@ class GuidePage extends StatelessWidget {
             description: 'فایل ها و جزوات را ذخیره کرده و هنگام مطالعه استفاده کنید',
             imageUrl: 'assets/scooter.png',
             bgColor: Colors.purple,
-          ),
-          OnboardingPageModel(
-            title: 'پروسه ها',
-            description: 'مدت زمانی رو انتخاب کنید و روی آن متمرکز شوید',
-            imageUrl: 'assets/storefront.png',
-            bgColor: Colors.green,
           ),
         ],
         onFinish: () {

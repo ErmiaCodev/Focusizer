@@ -23,6 +23,7 @@ class _NotesToolState extends State<NotesTool> {
             // insetPadding: EdgeInsets.zero,
             // clipBehavior: Clip.antiAliasWithSaveLayer,
             // clipBehavior: Clip.antiAlias,
+          insetPadding: EdgeInsets.zero,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -41,6 +42,7 @@ class _NotesToolState extends State<NotesTool> {
             ),
             content: Container(
               height: 200,
+              // constraints: BoxConstraints.expand(),
               child: ValueListenableBuilder(
                 valueListenable: Hive.box<Note>(notesBoxName).listenable(),
                 builder: (context, Box<Note> box, child) {
