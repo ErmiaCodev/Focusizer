@@ -18,10 +18,12 @@ class ProfilePage extends StatelessWidget {
   void _deleteHiveData() async {
     final tasksBox = Hive.box<Task>(tasksBoxName);
     final notesBox = Hive.box<Note>(notesBoxName);
+    final filesBox = Hive.box<Note>(filesBoxName);
     final coinsBox = Hive.box(coinsBoxName);
 
     tasksBox.clear();
     notesBox.clear();
+    filesBox.clear();
     coinsBox.clear();
   }
 
@@ -40,8 +42,7 @@ class ProfilePage extends StatelessWidget {
   }
 
   Future<void> _onThemeToggle(BuildContext context, WidgetRef ref) async {
-    final c = await ref.read(toggleThemeProvider);
-    print(c);
+    await ref.read(toggleThemeProvider);
   }
 
   @override

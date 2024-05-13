@@ -18,8 +18,14 @@ class GuidePage extends StatelessWidget {
             bgColor: Colors.indigo,
           ),
           OnboardingPageModel(
-            title: 'فضای ارتباط',
-            description: 'ارتباط با سایر کاربران از طریق اشتراک گذاری',
+            title: 'پروسه ها',
+            description: 'مدت زمانی رو انتخاب کنید و روی آن متمرکز شوید',
+            imageUrl: 'assets/storefront.png',
+            bgColor: Colors.green,
+          ),
+          OnboardingPageModel(
+            title: 'سکه و امتیاز',
+            description: 'با تمرکز بروی یک پروسه متناسب با زمان پروسه سکه دریافت کنید و قابلیت های برنامه رو باز کنید',
             imageUrl: 'assets/storefront.png',
             bgColor: const Color(0xfffeae4f),
           ),

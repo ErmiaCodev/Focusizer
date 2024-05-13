@@ -25,6 +25,7 @@ Future<void> main() async {
   await Hive.initFlutter();
   Hive.registerAdapter<Task>(TaskAdapter());
   Hive.registerAdapter<Note>(NoteAdapter());
+  Hive.registerAdapter<UserFile>(UserFileAdapter());
   await Hive.openBox<Task>(tasksBoxName);
   await Hive.openBox<Note>(notesBoxName);
   await Hive.openBox<UserFile>(filesBoxName);

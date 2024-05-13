@@ -36,7 +36,7 @@ class FilesPage extends StatelessWidget {
             return ListView.builder(
               itemCount: box.values.length,
               itemBuilder: (context, index) {
-                UserFile file = box.values.elementAt(index);
+                UserFile file = box.values.elementAt((box.values.length - index)-1);
                 return FileItem(file: file, index: index);
               },
             );
@@ -48,7 +48,7 @@ class FilesPage extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).pushNamed("/files/add");
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         backgroundColor: Colors.teal.shade300,
         foregroundColor: Colors.white,
       ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import '/pages/files/file_detail.dart';
 import '/models/file.dart';
@@ -8,6 +10,12 @@ class FileItem extends StatelessWidget {
 
   final UserFile file;
   final int index;
+
+  Future<void> _deleteFile(UserFile file) async {
+    file.delete();
+    File file_instance = File(file.path);
+    await file_instance.delete();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +41,13 @@ class FileItem extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Text(file.name, style: titleStyle),
                 ),
-                Text("")
+                FloatingActionButton.small(
+                  heroTag: 'task_trash_${index}',
+                  backgroundColor: Colors.red.shade300,
+                  foregroundColor: Colors.white,
+                  onPressed: () => _deleteFile(file),
+                  child: const Icon(Icons.recycling),
+                )
               ],
             ),
           ),

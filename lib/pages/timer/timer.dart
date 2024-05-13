@@ -10,8 +10,10 @@ import 'package:taskizer/constants/db.dart';
 import 'package:taskizer/constants/timer.dart';
 import 'package:taskizer/models/task.dart';
 import 'package:taskizer/pages/timer/infoer/infoer.dart';
+import 'package:taskizer/pages/timer/tools/files_tool.dart';
 import 'package:taskizer/pages/timer/tools/notes_tool.dart';
 import 'package:taskizer/pages/timer/tools/tool_button.dart';
+import 'package:taskizer/pages/timer/tools/toolbar.dart';
 import 'package:taskizer/store/theme.dart';
 import 'package:taskizer/styles/global.dart';
 
@@ -221,7 +223,8 @@ class _TimerPageState extends State<TimerPage> {
   Future<void> _addCoins() async {
     var box = await Hive.openBox(coinsBoxName);
     final current = box.get('coins') ?? 0;
-    box.put('coins', current + 5);
+    final newCoins = 5 + (1 * (_duration ~/ 5));
+    box.put('coins', current + newCoins);
   }
 
   Future<void> _decCoins() async {
@@ -352,6 +355,10 @@ class _TimerPageState extends State<TimerPage> {
               ),
             ),
             foregroundColor: Colors.white,
+            leading: (_isRunning) ?IconButton(
+              onPressed: () {},
+              icon:  const Icon(Icons.headphones),
+            ) : null,
             actions: [
               Consumer(
                 builder: (context, ref, child) {
@@ -362,8 +369,8 @@ class _TimerPageState extends State<TimerPage> {
                     icon: (Theme
                         .of(context)
                         .brightness == Brightness.dark)
-                        ? Icon(Icons.sunny)
-                        : Icon(Icons.mode_night),
+                        ? const Icon(Icons.sunny)
+                        : const Icon(Icons.mode_night),
                   );
                 },
               )
@@ -383,7 +390,7 @@ class _TimerPageState extends State<TimerPage> {
                       });
                     },
                   )
-                      : ProgressSlider(rem: _remaining),
+                      : ProgressSlider(rem: _remaining, dur: _duration),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -426,28 +433,12 @@ class _TimerPageState extends State<TimerPage> {
                   top: 0,
                   child: _buildCtrl(context),
                 ),
-                Positioned(
-                  top: 0,
-                  bottom: 0,
-                  right: 0,
-                  left: 0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      NotesTool(),
-                      ToolButton(
-                          icon: Icons.calculate,
-                          label: "حساب",
-                          onPressed: () {}),
-                    ],
-                  ),
-                ),
+                ToolBar(),
               ],
             ),
           ),
         ),
-      ),
-    );
+      ),);
   }
 
   void _startClicked() {

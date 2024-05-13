@@ -39,35 +39,35 @@ class _NotesToolState extends State<NotesTool> {
                 )
               ],
             ),
-            content: ValueListenableBuilder(
-              valueListenable: Hive.box<Note>(notesBoxName).listenable(),
-              builder: (context, Box<Note> box, child) {
-                if (box.values.isEmpty) {
-                  return Container(
-                    child: Text("یاداشتی وجود ندارد"),
+            content: Container(
+              height: 200,
+              child: ValueListenableBuilder(
+                valueListenable: Hive.box<Note>(notesBoxName).listenable(),
+                builder: (context, Box<Note> box, child) {
+                  if (box.values.isEmpty) {
+                    return Text("یاداشتی وجود ندارد");
+                  }
+
+                  return SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ...box.values.map((note) {
+                          return ElevatedButton(
+                            onPressed: () {
+                              // Navigator.of(context).pop();
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      NoteDetailPage(note: note)));
+                            },
+                            child: Text(note.name),
+                          );
+                        }),
+                      ],
+                    ),
                   );
-                }
-                return Container(
-                    height: 200,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          ...box.values.map((note) {
-                            return ElevatedButton(
-                              onPressed: () {
-                                // Navigator.of(context).pop();
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        NoteDetailPage(note: note)));
-                              },
-                              child: Text(note.name),
-                            );
-                          }),
-                        ],
-                      ),
-                    ));
-              },
+                },
+              ),
             ));
       },
     );

@@ -17,23 +17,35 @@ class FileAddPage extends StatefulWidget {
 class _FileAddPageState extends State<FileAddPage> {
   String _name = "";
   String _type = "";
+  String _fileType = "";
   File? _file;
 
   var labels = {
-    'nan': 'نوع فایل',
     'pdf': 'مستند (PDF)',
     'image': 'تصویر',
   };
 
-  void onFormSubmit() {
+  Future<void> onFormSubmit() async {
+    if (_type == "" || _fileType == "" || _name == "" || _file == null) {
+      return;
+    }
+
     Box<UserFile> filesBox = Hive.box<UserFile>(filesBoxName);
-    // filesBox.add(UserFile(name: _name, path: ""));
+
+    if (_file != null) {
+      final fileName = _file!.path.split('/').last;
+      final String appPath = (await getApplicationDocumentsDirectory()).path;
+      final File newFile = await _file!.copy('$appPath/$fileName');
+      filesBox.add(UserFile(name: _name, type: _fileType, path: newFile.path));
+      Navigator.pop(context);
+    }
   }
 
   Future<void> _pickDoc() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
-      type: FileType.image,
+      type: FileType.custom,
+      allowedExtensions: ['pdf']
     );
 
     if (result == null) {
@@ -43,6 +55,7 @@ class _FileAddPageState extends State<FileAddPage> {
     File file = result.paths.map((path) => File(path!)).toList().first;
     setState(() {
       _file = file;
+      _fileType = 'pdf';
     });
   }
 
@@ -59,6 +72,7 @@ class _FileAddPageState extends State<FileAddPage> {
     File file = result.paths.map((path) => File(path!)).toList().first;
     setState(() {
       _file = file;
+      _fileType = 'image';
     });
   }
 
@@ -92,7 +106,7 @@ class _FileAddPageState extends State<FileAddPage> {
         foregroundColor: Colors.white,
       ),
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -111,17 +125,17 @@ class _FileAddPageState extends State<FileAddPage> {
                   });
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(20)),
                 child: DropdownButton<String>(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
                   underline: Container(),
                   hint: Text(labels[_type] ?? 'نوع فایل',
-                      style: TextStyle(fontSize: 16)),
+                      style: const TextStyle(fontSize: 16)),
                   items: const [
                     DropdownMenuItem<String>(
                         value: "image", child: Text("تصویر")),
@@ -135,15 +149,15 @@ class _FileAddPageState extends State<FileAddPage> {
                   },
                 ),
               ),
-              SizedBox(height: 20),
-              (_type != '') ? _buildPicker(context) : Text(""),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
+              (_type != '') ? _buildPicker(context) : const Text(""),
+              const SizedBox(height: 20),
               Flexible(
                   fit: FlexFit.loose,
                   child: FloatingActionButton.extended(
                     heroTag: 'submitNote',
-                    onPressed: onFormSubmit,
-                    label: Text("ذخیره", style: labelStyle),
+                    onPressed: () => onFormSubmit(),
+                    label: const Text("ذخیره", style: labelStyle),
                     backgroundColor: Colors.teal.shade300,
                     foregroundColor: Colors.white,
                   ))

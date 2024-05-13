@@ -19,13 +19,13 @@ class CircleButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
         BoxShadow(
-          color: Colors.grey.shade400,
+          color: (Theme.of(context).brightness == Brightness.dark) ? Colors.grey.shade800 : Colors.grey.shade400,
           offset: const Offset(
             0.0,
             3.0
           ),
-          blurRadius: 5.0,
-          spreadRadius: 0.0,
+          blurRadius: 6.0,
+          spreadRadius: 0.2,
         ), //BoxShadow
       ]),
       child: IconButton(

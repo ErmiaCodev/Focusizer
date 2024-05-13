@@ -5,6 +5,7 @@ import 'package:taskizer/pages/files/file_add.dart';
 import 'package:taskizer/pages/files/files_page.dart';
 import 'package:taskizer/pages/notes/note_add.dart';
 import 'package:taskizer/pages/notes/notes_page.dart';
+import 'package:taskizer/pages/shop/shop.dart';
 import 'package:taskizer/pages/tasks/tasks_page.dart';
 import 'package:taskizer/pages/timer/timer.dart';
 import '/pages/home/home_page.dart';
@@ -60,6 +61,7 @@ class App extends ConsumerWidget {
         '/files': (context) => const FilesPage(),
         '/files/add': (context) => FileAddPage(),
         '/tasks': (context) => const TasksPage(),
+        '/shop': (context) => const ShopPage(),
         '/timer': (context) => const TimerPage(),
         '/auth/login': (context) => const LoginPage(),
       },
