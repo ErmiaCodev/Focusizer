@@ -41,7 +41,6 @@ class _TimerPageState extends State<TimerPage> {
   String? _topic;
   ValueNotifier<bool> _deepFocus = ValueNotifier(false);
 
-
   Future<void> _requestPermissionForAndroid() async {
     if (!Platform.isAndroid) {
       return;
@@ -270,8 +269,7 @@ class _TimerPageState extends State<TimerPage> {
       context: context,
       type: QuickAlertType.error,
       title: "اخطار",
-      text:
-          'با انصراف شما 1 سکه از دست خواهید داد!',
+      text: 'با انصراف شما 1 سکه از دست خواهید داد!',
       confirmBtnText: "توقف",
       confirmBtnColor: Colors.red.shade300,
       onConfirmBtnTap: () {
@@ -327,46 +325,60 @@ class _TimerPageState extends State<TimerPage> {
   }
 
   Future<void> showSettingsPanelModal() async {
-    await showDialog(context: context, builder: (context) {
-     return AlertDialog(
-       title: const Text("تنظیمات پروسه", textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
-         content: ValueListenableBuilder<bool>(
-           valueListenable: _deepFocus,
-           builder: (context, currentState, child) {
-             return Container(
-               height: 200,
-               child: Column(
-                   children: [
-                     Row(
-                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                       crossAxisAlignment: CrossAxisAlignment.center,
-                       children: [
-                         Column(
-                           children: [
-                             Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                               Icon(Icons.local_fire_department),
-                               SizedBox(width: 4),
-                               Text("تمرکز عمیق", style: titleStyle.copyWith(fontSize: 18), textAlign: TextAlign.end),
-                             ]),
-                             Text("+ 10 سکه هدیه", style: labelStyle.copyWith(fontSize: 12), textAlign: TextAlign.end),
-                           ],
-                         ),
+    if (_isRunning) {
+      return;
+    }
 
-                         Switch(activeColor: Colors.green.shade400, value: currentState, onChanged: (value) {
-                           setState(() {
-                             _deepFocus.value = value;
-                           });
-                         })
-                       ],
-                     ),
-                     Divider()
-                   ]
-               ),
-             );
-           },
-         )
-     );
-    });
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              title: const Text("تنظیمات پروسه",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              content: ValueListenableBuilder<bool>(
+                valueListenable: _deepFocus,
+                builder: (context, currentState, child) {
+                  return Container(
+                    height: 200,
+                    child: Column(children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Icon(Icons.local_fire_department),
+                                    SizedBox(width: 4),
+                                    Text("تمرکز عمیق",
+                                        style:
+                                            titleStyle.copyWith(fontSize: 18),
+                                        textAlign: TextAlign.end),
+                                  ]),
+                              Text("+ 10 سکه هدیه",
+                                  style: labelStyle.copyWith(fontSize: 12),
+                                  textAlign: TextAlign.end),
+                            ],
+                          ),
+                          Switch(
+                              activeColor: Colors.green.shade400,
+                              value: currentState,
+                              onChanged: (value) {
+                                setState(() {
+                                  _deepFocus.value = value;
+                                });
+                              })
+                        ],
+                      ),
+                      Divider()
+                    ]),
+                  );
+                },
+              ));
+        });
   }
 
   Widget _buildSettingsPanel() {
@@ -375,7 +387,8 @@ class _TimerPageState extends State<TimerPage> {
       children: [
         ElevatedButton(
           style: ButtonStyle(
-            padding: MaterialStateProperty.resolveWith((states) => EdgeInsets.symmetric(horizontal: 12, vertical: 4)),
+            padding: MaterialStateProperty.resolveWith(
+                (states) => EdgeInsets.symmetric(horizontal: 12, vertical: 4)),
           ),
           onPressed: () => showSettingsPanelModal(),
           child: const IntrinsicHeight(
