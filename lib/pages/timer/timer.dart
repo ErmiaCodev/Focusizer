@@ -401,8 +401,8 @@ class _TimerPageState extends State<TimerPage> {
                         : Icons.do_not_disturb_on);
                   },
                 ),
-                VerticalDivider(thickness: 2),
-                Icon(Icons.timer),
+                const VerticalDivider(thickness: 2),
+                const Icon(Icons.timer),
               ],
             ),
           ),
