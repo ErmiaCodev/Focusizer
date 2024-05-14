@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:taskizer/components/coins_bar/coins_btn.dart';
 import 'package:taskizer/pages/timer/player/music_player.dart';
 import '/components/appbar/navbar.dart';
 import '/components/button/circle_btn.dart';
@@ -222,12 +223,12 @@ class _TimerPageState extends State<TimerPage> {
   Future<void> _addCoins() async {
     var box = await Hive.box(coinsBoxName);
     final current = box.get('coins') ?? 0;
-    final newCoins = 5 + (7 * (_duration ~/ 5)) + (_deepFocus.value ? 10 : 0);
+    final newCoins = 5 + (2 * (_duration ~/ 5)) + (_deepFocus.value ? 10 : 0);
     box.put('coins', current + newCoins);
   }
 
   Future<void> _decCoins() async {
-    var box = await Hive.openBox(coinsBoxName);
+    var box = await Hive.box(coinsBoxName);
     final current = box.get('coins') ?? 0;
     if (current != 0) {
       box.put('coins', current - 1);
@@ -389,10 +390,17 @@ class _TimerPageState extends State<TimerPage> {
                 const EdgeInsets.symmetric(horizontal: 12, vertical: 4)),
           ),
           onPressed: () => showSettingsPanelModal(),
-          child: const IntrinsicHeight(
+          child: IntrinsicHeight(
             child: Row(
               children: <Widget>[
-                Icon(Icons.local_fire_department),
+                ValueListenableBuilder<bool>(
+                  valueListenable: _deepFocus,
+                  builder: (context, value, child) {
+                    return Icon((value == true)
+                        ? Icons.local_fire_department
+                        : Icons.do_not_disturb_on);
+                  },
+                ),
                 VerticalDivider(thickness: 2),
                 Icon(Icons.timer),
               ],
@@ -432,6 +440,7 @@ class _TimerPageState extends State<TimerPage> {
             foregroundColor: Colors.white,
             leading: (_isRunning) ? const MusicPlayer() : null,
             actions: [
+              const CoinsBtn(open: false),
               Consumer(
                 builder: (context, ref, child) {
                   return IconButton(
