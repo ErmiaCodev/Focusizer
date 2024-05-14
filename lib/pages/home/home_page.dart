@@ -33,7 +33,9 @@ class HomePage extends ConsumerWidget {
           centerTitle: true,
           flexibleSpace: Container(
             decoration: BoxDecoration(
-              gradient: brandGradient,
+              gradient: Theme.of(context).brightness == Brightness.dark
+                  ? darkGradient
+                  : brandGradient,
             ),
           ),
           actions: const [
