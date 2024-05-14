@@ -4,7 +4,8 @@ import 'dart:isolate';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:quickalert/quickalert.dart';
-import 'package:taskizer/components/coins_bar/coins_btn.dart';
+import 'package:taskizer/components/actions/coins_btn.dart';
+import 'package:taskizer/components/actions/theme_toggle.dart';
 import 'package:taskizer/pages/timer/player/music_player.dart';
 import '/components/appbar/navbar.dart';
 import '/components/button/circle_btn.dart';
@@ -439,20 +440,9 @@ class _TimerPageState extends State<TimerPage> {
             ),
             foregroundColor: Colors.white,
             leading: (_isRunning) ? const MusicPlayer() : null,
-            actions: [
-              const CoinsBtn(open: false),
-              Consumer(
-                builder: (context, ref, child) {
-                  return IconButton(
-                    onPressed: () {
-                      ref.read(toggleThemeProvider);
-                    },
-                    icon: (Theme.of(context).brightness == Brightness.dark)
-                        ? const Icon(Icons.sunny)
-                        : const Icon(Icons.mode_night),
-                  );
-                },
-              )
+            actions: const [
+              CoinsBtn(open: false),
+              ThemeToggler(),
             ],
           ),
           body: Column(

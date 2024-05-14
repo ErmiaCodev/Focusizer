@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:taskizer/components/coins_bar/coins_btn.dart';
+import 'package:taskizer/components/actions/coins_btn.dart';
+import 'package:taskizer/components/actions/theme_toggle.dart';
 import 'package:taskizer/constants/db.dart';
 import 'package:taskizer/models/task.dart';
 import '/pages/home/feature.dart';
@@ -36,7 +37,8 @@ class HomePage extends ConsumerWidget {
             ),
           ),
           actions: const [
-            CoinsBtn(),
+            CoinsBtn(open: false),
+            ThemeToggler(),
           ],
           foregroundColor: Colors.white,
           leading: IconButton(

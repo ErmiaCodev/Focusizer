@@ -8,11 +8,10 @@ const cardTitle = TextStyle(
 );
 
 const cardText = TextStyle(
-  color: Colors.white,
-  fontSize: 17,
-  fontWeight: FontWeight.bold,
-  fontFamily: 'Bach'
-);
+    color: Colors.white,
+    fontSize: 17,
+    fontWeight: FontWeight.bold,
+    fontFamily: 'Bach');
 
 class ItemCard extends StatelessWidget {
   const ItemCard({
@@ -40,25 +39,30 @@ class ItemCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 5),
         child: Container(
           padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            gradient: LinearGradient(
-              colors: <Color>[
-                Colors.teal.shade500,
-                Colors.cyan.shade600
-              ],
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-            ),
-            borderRadius: BorderRadius.circular(30),
-          ),
+          decoration: Theme.of(context).brightness == Brightness.dark
+              ? BoxDecoration(
+                  color: Colors.white,
+                  gradient: LinearGradient(
+                    colors: <Color>[
+                      Colors.cyan.shade900,
+                      Colors.blueGrey.shade600
+                    ],
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                  ),
+                  borderRadius: BorderRadius.circular(30),
+                )
+              : BoxDecoration(
+                  color: Colors.white,
+                  gradient: LinearGradient(
+                    colors: <Color>[Colors.teal.shade500, Colors.cyan.shade600],
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                  ),
+                  borderRadius: BorderRadius.circular(30),
+                ),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            // const SizedBox(height: 10),
-            // Text(
-            //   subTitle,
-            //   style: cardText,
-            // ),
             const SizedBox(height: 10),
             Text(
               title,

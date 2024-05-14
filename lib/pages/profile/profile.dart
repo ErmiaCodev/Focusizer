@@ -78,10 +78,19 @@ class ProfilePage extends StatelessWidget {
                               onPressed: () => _onThemeToggle(context, ref),
                               heroTag: 'follow',
                               elevation: 0,
-                              backgroundColor: (Theme.of(context).brightness == Brightness.dark) ? Colors.orange.shade300 : Colors.indigo.shade300,
-                              foregroundColor: (Theme.of(context).brightness == Brightness.dark) ? Colors.black : Colors.white,
+                              backgroundColor: (Theme.of(context).brightness ==
+                                      Brightness.dark)
+                                  ? Colors.orange.shade300
+                                  : Colors.indigo.shade300,
+                              foregroundColor: (Theme.of(context).brightness ==
+                                      Brightness.dark)
+                                  ? Colors.black
+                                  : Colors.white,
                               label: Text(
-                                (Theme.of(context).brightness == Brightness.dark) ? "حالت روز" : "حالت شب",
+                                (Theme.of(context).brightness ==
+                                        Brightness.dark)
+                                    ? "حالت روز"
+                                    : "حالت شب",
                                 style: normTextStyle,
                               ),
                               icon: const Icon(Icons.nightlight),
@@ -139,7 +148,7 @@ class _ProfileInfoRow extends StatelessWidget {
                       return Expanded(
                         child: _singleItem(
                           context,
-                          ProfileInfoItem("پروسه ها", 0),
+                          const ProfileInfoItem("پروسه ها", 0),
                         ),
                       );
                     }
@@ -152,7 +161,7 @@ class _ProfileInfoRow extends StatelessWidget {
                     );
                   },
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 ValueListenableBuilder(
                   valueListenable: Hive.box<Note>(notesBoxName).listenable(),
                   builder: (context, Box<Note> box, child) {
@@ -255,7 +264,7 @@ class _TopPortion extends StatelessWidget {
                     color: Colors.white,
                     shape: BoxShape.circle,
                   ),
-                  child: const Image(image: AssetImage('assets/icon/simple_av.png')),
+                  child: const Image(image: AssetImage('assets/avatar.png')),
                 ),
                 Positioned(
                   bottom: 0,
