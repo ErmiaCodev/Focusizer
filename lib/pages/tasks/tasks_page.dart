@@ -48,33 +48,31 @@ class TasksPage extends StatelessWidget {
               return SliverList(
                 delegate: SliverChildListDelegate([
                   Container(
-                    padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10),
                       child: SfCartesianChart(
-                          primaryXAxis: CategoryAxis(),
-
+                          primaryXAxis: CategoryAxis(isVisible: false),
+                          title: ChartTitle(text: "نمودار پیشرفت"),
+                          plotAreaBackgroundColor: (Theme.of(context).brightness == Brightness.dark) ? Colors.blueGrey.shade700 : Colors.white,
+                          backgroundColor: (Theme.of(context).brightness == Brightness.dark) ? Colors.blueGrey.shade700 : Colors.white,
                           series: <LineSeries<TaskItem, int>>[
                             LineSeries<TaskItem, int>(
-                                dataSource:  <TaskItem>[
+                                dataSource: <TaskItem>[
                                   ...(box.values.map((t) {
-                                    final index = box.values.toList().indexOf(t);
+                                    final index =
+                                        box.values.toList().indexOf(t);
                                     return TaskItem(task: t, index: index);
                                   }))
                                 ],
+                                color: Colors.green.shade300,
                                 xValueMapper: (TaskItem ti, _) => ti.index,
-                                yValueMapper: (TaskItem ti, _) => ti.task.duration,
+                                yValueMapper: (TaskItem ti, _) =>
+                                    ti.task.duration,
                                 // Enable data label
-                                dataLabelSettings: DataLabelSettings(isVisible: true)
-                            )
-                          ]
-                      )
-                  ),
-
+                                dataLabelSettings:
+                                    const DataLabelSettings(isVisible: true))
+                          ])),
                   const SizedBox(height: 20),
-
-                  ...box.values
-                      .toList()
-                      .reversed
-                      .map((task) {
+                  ...box.values.toList().reversed.map((task) {
                     final index = box.values.toList().indexOf(task);
                     return TaskBox(task: task, index: index);
                   })

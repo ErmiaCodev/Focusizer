@@ -255,7 +255,7 @@ class _TopPortion extends StatelessWidget {
                     color: Colors.white,
                     shape: BoxShape.circle,
                   ),
-                  child: const Image(image: AssetImage('assets/avatar.png')),
+                  child: const Image(image: AssetImage('assets/icon/simple_av.png')),
                 ),
                 Positioned(
                   bottom: 0,

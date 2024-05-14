@@ -26,6 +26,7 @@ class MyTaskHandler extends TaskHandler {
   int _seconds = 0;
   int _duration = 0;
   bool _running = true;
+  bool _deepFocus = false;
 
   // Called when the task is started.
   @override
@@ -35,6 +36,11 @@ class MyTaskHandler extends TaskHandler {
     // You can use the getData function to get the stored data.
     final duration =
         await FlutterForegroundTask.getData<String>(key: 'duration');
+
+    final deepFocusRaw =
+        await FlutterForegroundTask.getData<String>(key: 'deepFocus');
+
+    _deepFocus = bool.parse(deepFocusRaw ?? 'false');
 
     var mins = int.parse(await duration.toString());
     _seconds = mins * 60;
@@ -70,9 +76,9 @@ class MyTaskHandler extends TaskHandler {
 
     _seconds--;
 
-    if ((await FlutterForegroundTask.isAppOnForeground) == false) {
+    if ((await FlutterForegroundTask.isAppOnForeground) == false && _deepFocus == true) {
       FlutterForegroundTask.launchApp();
-      print("FLutter Foreground Task");
+      print("Flutter Foreground Task");
     }
   }
 
@@ -87,7 +93,7 @@ class MyTaskHandler extends TaskHandler {
     if (id == "cancelButton") {
       _sendPort?.send('onCanceled');
       _running = false;
-      Timer(const Duration(milliseconds: 200), () async {
+      Timer(const Duration(milliseconds: 50), () async {
         await FlutterForegroundTask.stopService();
       });
     }

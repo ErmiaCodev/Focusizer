@@ -128,7 +128,6 @@ class HomePage extends ConsumerWidget {
                         icon: "assets/storefront.png",
                         link: "/shop",
                       ),
-
                       FeatureBox(
                         title: "موسیقی",
                         icon: "assets/icon/second.png",
@@ -136,16 +135,24 @@ class HomePage extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  // const SizedBox(height: 30),
-                  // const Row(
-                  //   mainAxisAlignment: MainAxisAlignment.start,
-                  //   children: <Widget>[
-                  //     Text(
-                  //       "اخبار ",
-                  //       style: titleStyle,
-                  //     ),
-                  //   ],
-                  // ),
+                  SizedBox(height: 30),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        const Text(
+                          "درباره برنامه",
+                          style: titleStyle,
+                        ),
+                      ]),
+                  Row(
+                    children: [
+                      FeatureBox(
+                        title: "درباره برنامه",
+                        icon: "assets/icon/about.png",
+                        link: "/about",
+                      ),
+                    ],
+                  )
                 ]),
               ),
             )

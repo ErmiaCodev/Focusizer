@@ -52,6 +52,8 @@ dependencies:
   flutter_pdfview: ^1.3.2
   syncfusion_flutter_charts: ^25.2.3+1
   just_audio: ^0.9.37
+  flutter_linkify: ^6.0.0
+  url_launcher: ^6.2.6
 
 
 dev_dependencies:
@@ -90,6 +92,8 @@ flutter:
     - assets/icon/second.png
     - assets/icon/third.png
     - assets/icon/more.png
+    - assets/icon/about.png
+    - assets/icon/simple_av.png
     - assets/scooter.png
     - assets/building.png
     - assets/storefront.png

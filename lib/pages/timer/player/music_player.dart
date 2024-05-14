@@ -16,103 +16,144 @@ class MusicPlayer extends StatefulWidget {
 
 class _MusicPlayerState extends State<MusicPlayer> {
   bool _isPlaying = false;
-  AudioPlayer? _player;
+  AudioPlayer _player = AudioPlayer();
   Music? _music;
 
-  Widget _musicSelector() {
+  Widget _musicSelector(updater) {
     return ElevatedButton(
-        onPressed: () async {
-          await showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                  title:
-                      const Text('انتخاب موسیقی', textAlign: TextAlign.center),
-                  content: Container(
-                    height: 240,
-                    child: ValueListenableBuilder(
-                      valueListenable:
-                          Hive.box<Music>(musicsBoxName).listenable(),
-                      builder: (context, Box<Music> box, child) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            ...box.values.map((m) {
-                              return ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _music = m;
-                                    });
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(m.name));
-                            })
-                          ],
-                        );
-                      },
-                    ),
-                  ));
-            },
-          );
-        },
-        child: Row(
-          children: [
-            Padding(
-                padding: EdgeInsets.only(top: 4),
-                child: Text(_music!.name)),
-            SizedBox(width: 6),
-            Icon(Icons.headphones),
-          ],
-        ));
+      onPressed: () async {
+        await showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('انتخاب موسیقی', textAlign: TextAlign.center),
+              content: Container(
+                height: 240,
+                child: ValueListenableBuilder(
+                  valueListenable: Hive.box<Music>(musicsBoxName).listenable(),
+                  builder: (context, Box<Music> box, child) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ...box.values.map((m) {
+                          return ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                _music = m;
+                              });
+                              updater(m.name);
+                              Navigator.pop(context);
+                            },
+                            child: Text(m.name),
+                          );
+                        })
+                      ],
+                    );
+                  },
+                ),
+              ),
+            );
+          },
+        );
+      },
+      child: Row(
+        children: [
+          Padding(
+              padding: EdgeInsets.only(top: 4),
+              child: Text(_music?.name ?? 'انتخاب')),
+          const SizedBox(width: 6),
+          const Icon(Icons.headphones),
+        ],
+      ),
+    );
   }
 
-  Widget _buildPlayerCtrl() {
+  Widget _buildPlayerCtrl(callback, isPlaying) {
     return CircleButton(
-        color: Colors.white,
-        bgColor: Colors.teal.shade300,
-        icon: Icons.play_arrow,
-        callback: () {});
+      color: Colors.white,
+      bgColor: Colors.teal.shade300,
+      icon: isPlaying ? Icons.pause : Icons.play_arrow,
+      callback: callback,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () async {
+        final snackBar = SnackBar(
+            content: Text("بزودی!",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white)),
+            backgroundColor: Colors.lightBlue.shade400);
+
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+        return;
         await showDialog(
           context: context,
           builder: (context) {
-            return AlertDialog(
-              alignment: Alignment.center,
-              clipBehavior: Clip.antiAlias,
-              title: Text("موسیقی", textAlign: TextAlign.center),
-              content: Container(
-                  height: 140,
-                  padding: EdgeInsets.all(0),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [_musicSelector()],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            return StatefulBuilder(
+              builder: (context, setStateM) {
+                String musicName = "";
+                bool isPlaying = false;
+
+                return AlertDialog(
+                  alignment: Alignment.center,
+                  clipBehavior: Clip.antiAlias,
+                  title: Text("موسیقی", textAlign: TextAlign.center),
+                  content: Container(
+                      height: 140,
+                      padding: EdgeInsets.all(0),
+                      child: Column(
                         children: [
-                          CircleButton(
-                              color: Colors.white,
-                              bgColor: Colors.green.shade300,
-                              icon: Icons.skip_next,
-                              callback: () {}),
-                          _buildPlayerCtrl(),
-                          CircleButton(
-                              color: Colors.white,
-                              bgColor: Colors.green.shade300,
-                              icon: Icons.skip_previous,
-                              callback: () {}),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              _musicSelector((value) {
+                                setStateM(() {
+                                  musicName = value;
+                                });
+                              })
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CircleButton(
+                                color: Colors.white,
+                                bgColor: Colors.green.shade300,
+                                icon: Icons.skip_next,
+                                callback: () {},
+                              ),
+                              _buildPlayerCtrl(() {
+                                if (_music != null) {
+                                  setStateM(() {
+                                    isPlaying = true;
+                                  });
+                                  setState(() {
+                                    _isPlaying = true;
+                                  });
+                                  _player.setUrl(_music!.path);
+                                  _player.play();
+                                }
+                              }, isPlaying),
+                              CircleButton(
+                                color: Colors.white,
+                                bgColor: Colors.green.shade300,
+                                icon: Icons.skip_previous,
+                                callback: () {},
+                              ),
+                            ],
+                          ),
                         ],
-                      ),
-                    ],
-                  )),
+                      )),
+                );
+              },
             );
           },
         );

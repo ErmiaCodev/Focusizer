@@ -22,5 +22,4 @@ const titleStyle = TextStyle(
 const normTextStyle = TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.normal,
-  // color: Colors.blueGrey.shade700,
 );
