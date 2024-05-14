@@ -23,7 +23,7 @@ class TasksPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Navbar("تسک ها"),
+      appBar: const Navbar("پروسه ها"),
       body: CustomScrollView(
         slivers: [
           ValueListenableBuilder(
@@ -37,7 +37,7 @@ class TasksPage extends StatelessWidget {
                       const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("تسکی ایجاد نشده!!!", style: titleStyle)
+                          Text("پروسه ای ایجاد نشده!!!", style: titleStyle)
                         ],
                       )
                     ]),

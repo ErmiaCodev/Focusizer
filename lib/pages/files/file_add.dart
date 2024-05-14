@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:taskizer/models/file.dart';
 import '/constants/db.dart';
-import '/models/note.dart';
 import '/styles/global.dart';
 
 class FileAddPage extends StatefulWidget {
@@ -43,10 +42,9 @@ class _FileAddPageState extends State<FileAddPage> {
 
   Future<void> _pickDoc() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      allowMultiple: false,
-      type: FileType.custom,
-      allowedExtensions: ['pdf']
-    );
+        allowMultiple: false,
+        type: FileType.custom,
+        allowedExtensions: ['pdf']);
 
     if (result == null) {
       return;
@@ -100,7 +98,7 @@ class _FileAddPageState extends State<FileAddPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("افزودن  فایل", style: titleStyle),
+        title: const Text("افزودن  فایل", style: titleStyle),
         centerTitle: true,
         backgroundColor: Colors.teal.shade400,
         foregroundColor: Colors.white,
@@ -127,7 +125,7 @@ class _FileAddPageState extends State<FileAddPage> {
               ),
               const SizedBox(height: 20),
               Container(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(20)),

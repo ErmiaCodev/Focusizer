@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:isolate';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:quickalert/quickalert.dart';
@@ -196,7 +195,6 @@ class _TimerPageState extends State<TimerPage> {
       await _requestPermissionForAndroid();
       _initForegroundTask();
 
-      // You can get the previous ReceivePort without restarting the service.
       if (await FlutterForegroundTask.isRunningService) {
         final newReceivePort = FlutterForegroundTask.receivePort;
         _registerReceivePort(newReceivePort);
@@ -215,7 +213,7 @@ class _TimerPageState extends State<TimerPage> {
         context: context,
         type: QuickAlertType.success,
         title: "تبریک",
-        text: 'شما یک پروسه رو با موفقیت به تمام رساندید!!',
+        text: 'شما یک پروسه رو با موفقیت به اتمام رساندید!!',
         confirmBtnText: "تایید",
         confirmBtnColor: Colors.green.shade300);
     _saveTask();
@@ -269,7 +267,7 @@ class _TimerPageState extends State<TimerPage> {
       context: context,
       type: QuickAlertType.error,
       title: "اخطار",
-      text: 'با انصراف شما 1 سکه از دست خواهید داد!',
+      text: 'با این کار 1 سکه از دست خواهید داد!',
       confirmBtnText: "توقف",
       confirmBtnColor: Colors.red.shade300,
       onConfirmBtnTap: () {
@@ -387,8 +385,8 @@ class _TimerPageState extends State<TimerPage> {
       children: [
         ElevatedButton(
           style: ButtonStyle(
-            padding: MaterialStateProperty.resolveWith(
-                (states) => EdgeInsets.symmetric(horizontal: 12, vertical: 4)),
+            padding: MaterialStateProperty.resolveWith((states) =>
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 4)),
           ),
           onPressed: () => showSettingsPanelModal(),
           child: const IntrinsicHeight(
@@ -432,7 +430,7 @@ class _TimerPageState extends State<TimerPage> {
               ),
             ),
             foregroundColor: Colors.white,
-            leading: (_isRunning) ? MusicPlayer() : null,
+            leading: (_isRunning) ? const MusicPlayer() : null,
             actions: [
               Consumer(
                 builder: (context, ref, child) {
@@ -455,7 +453,7 @@ class _TimerPageState extends State<TimerPage> {
               ListBody(
                 children: [
                   _buildSettingsPanel(),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   (!_isRunning)
                       ? TimeSelector(
                           callback: (value) {
@@ -506,7 +504,7 @@ class _TimerPageState extends State<TimerPage> {
                   top: 0,
                   child: _buildCtrl(context),
                 ),
-                ToolBar(),
+                const ToolBar(),
               ],
             ),
           ),

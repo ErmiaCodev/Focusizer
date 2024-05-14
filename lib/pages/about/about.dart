@@ -24,10 +24,11 @@ class AboutPage extends StatelessWidget {
                   Image.asset("assets/icon/logo.png", height: 180, width: 180)
                 ],
               ),
-              Text("تمر کز  یار", style: titleStyle, textAlign: TextAlign.center),
+              const Text("تمر کز  یار",
+                  style: titleStyle, textAlign: TextAlign.center),
               const SizedBox(height: 20),
               const Text(
-                "این برنامه جهت کمک به برنامه ریزی دانش آموزان و سایر افراد طراحی شده. تایمر برای زمان بندی درسی و تمرکز بروی یک پروسه همراه چندین ویژگی در اختیار کاربر قرار گرفته.",
+                "این برنامه جهت کمک به برنامه ریزی دانش آموزان و زمان بندی بهتر طراحی شده. درکنار تایمر تعدادی امکانات قرار گرفته که با افزایش امتیاز فعال میشود.",
                 style: normTextStyle,
                 textAlign: TextAlign.justify,
               ),
@@ -35,11 +36,18 @@ class AboutPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("طراح و سازنده", style: normTextStyle.copyWith(fontWeight: FontWeight.bold)),
-                  ElevatedButton(onPressed: () {
-                    final Uri url = Uri.parse('https://ErmiaCodev.github.io/Fa/');
-                    launchUrl(url);
-                  }, child: Text("ارمیا مقدمی", style: normTextStyle.copyWith(fontWeight: FontWeight.bold)))
+                  Text("طراح و سازنده",
+                      style:
+                          normTextStyle.copyWith(fontWeight: FontWeight.bold)),
+                  ElevatedButton(
+                      onPressed: () {
+                        final Uri url =
+                            Uri.parse('https://ErmiaCodev.github.io/Fa/');
+                        launchUrl(url);
+                      },
+                      child: Text("ارمیا مقدمی",
+                          style: normTextStyle.copyWith(
+                              fontWeight: FontWeight.bold)))
                 ],
               )
             ],

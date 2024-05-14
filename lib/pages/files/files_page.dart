@@ -14,7 +14,7 @@ class FilesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Guard(
         child: Scaffold(
-      appBar: Navbar("فایل ها"),
+      appBar: const Navbar("فایل ها"),
       body: Padding(
         padding: EdgeInsets.all(20),
         child: ValueListenableBuilder(

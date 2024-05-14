@@ -18,9 +18,9 @@ class _NotesToolState extends State<FilesTool> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          // insetPadding: EdgeInsets.zero,
-          // clipBehavior: Clip.antiAliasWithSaveLayer,
-          // clipBehavior: Clip.antiAlias,
+            // insetPadding: EdgeInsets.zero,
+            // clipBehavior: Clip.antiAliasWithSaveLayer,
+            // clipBehavior: Clip.antiAlias,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -42,7 +42,7 @@ class _NotesToolState extends State<FilesTool> {
               builder: (context, Box<UserFile> box, child) {
                 if (box.values.isEmpty) {
                   return Container(
-                    child: Text("فایلی وجود ندارد"),
+                    child: const Text("فایلی وجود ندارد"),
                   );
                 }
                 return Container(

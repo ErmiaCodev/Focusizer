@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -60,7 +59,7 @@ class HomePage extends ConsumerWidget {
                         return ItemCard(
                           color: Colors.teal,
                           title: "تمرکز کنید!",
-                          note: "کل تسک ها:",
+                          note: "کل پروسه ها:",
                           timestamp: "هیچی",
                           onTap: () async {
                             Navigator.of(context).pushNamed('/timer');
@@ -92,7 +91,7 @@ class HomePage extends ConsumerWidget {
                         style: emphesizeStyle,
                       ),
                       const Text(
-                        "خوش آومدی!",
+                        "خوش اومدی!",
                         style: titleStyle,
                       ),
                     ],
@@ -135,8 +134,8 @@ class HomePage extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 30),
-                  Row(
+                  const SizedBox(height: 30),
+                  const Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         const Text(
@@ -144,7 +143,7 @@ class HomePage extends ConsumerWidget {
                           style: titleStyle,
                         ),
                       ]),
-                  Row(
+                  const Row(
                     children: [
                       FeatureBox(
                         title: "درباره برنامه",
