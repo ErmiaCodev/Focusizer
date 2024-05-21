@@ -96,7 +96,7 @@ class MyTaskHandler extends TaskHandler {
 
   @override
   void onNotificationPressed() {
-    if (_running) {z
+    if (_running) {
       FlutterForegroundTask.launchApp("/");
       // _sendPort?.send(WakeOption(duration: _duration, remaining: _seconds));
     }
