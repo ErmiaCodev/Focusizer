@@ -1,6 +1,6 @@
-const default_duration = 5;
+const default_duration = 5/5;
 
-const max_mins = 45;
+const max_mins = 120/5;
 const max_safe_secs = 30;
 
 const alphaBeta = "abcdefghijklmnopqrstuvwxyz";

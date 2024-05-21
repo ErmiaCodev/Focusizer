@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:taskizer/components/actions/theme_toggle.dart';
 import 'package:taskizer/components/appbar/navbar.dart';
 import 'package:taskizer/components/actions/coins_btn.dart';
+import 'package:taskizer/pages/profile/profile.dart';
 import 'package:taskizer/styles/global.dart';
 
 class ShopPage extends StatefulWidget {
@@ -17,15 +19,18 @@ class _ShopPageState extends State<ShopPage> {
       appBar: AppBar(
         title: Text("فروشگاه", style: appbarTitle),
         centerTitle: true,
-        foregroundColor: Colors.white,
         flexibleSpace: Container(
           decoration: BoxDecoration(
-            gradient: brandGradient,
+            gradient: Theme.of(context).brightness == Brightness.dark
+                ? darkGradient
+                : brandGradient,
           ),
         ),
         actions: const [
-          CoinsBtn(),
+          CoinsBtn(open: false),
+          ThemeToggler(),
         ],
+        foregroundColor: Colors.white,
       ),
       body: Center(
         child: Text("بزودی در بروزرسانی های بعدی", style: titleStyle.copyWith(

@@ -14,14 +14,14 @@ class TimeSelector extends StatefulWidget {
 }
 
 class _SelectorState extends State<TimeSelector> {
-  int _value = 5;
+  int _value = 1;
 
   @override
   Widget build(BuildContext context) {
     final slider = SleekCircularSlider(
       min: 0,
       max: max_mins.toDouble(),
-      initialValue: 5.5,
+      initialValue: 1,
       appearance: CircularSliderAppearance(
           size: 260,
           startAngle: 120,
@@ -45,7 +45,7 @@ class _SelectorState extends State<TimeSelector> {
             Container(
               padding: EdgeInsets.only(top: 8),
               child: Text(
-                "${_value} دقیقه",
+                "${_value*5} دقیقه",
                 textDirection: TextDirection.rtl,
                 style: TextStyle(
                     color: (Theme.of(context).colorScheme.brightness == Brightness.dark) ? Colors.green.shade50 : Colors.green.shade700,
@@ -63,7 +63,7 @@ class _SelectorState extends State<TimeSelector> {
         });
       },
       onChangeEnd: (double weight) {
-        widget.callback(_value);
+        widget.callback(_value*5);
       },
     );
 

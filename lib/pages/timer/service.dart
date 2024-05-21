@@ -3,6 +3,8 @@ import 'dart:async';
 import 'dart:isolate';
 
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:taskizer/constants/db.dart';
 
 class WakeOption {
   final int duration;
@@ -101,9 +103,11 @@ class MyTaskHandler extends TaskHandler {
   }
 
   @override
-  void onNotificationPressed() {
+  void onNotificationPressed() async {
     if (_running) {
-      FlutterForegroundTask.launchApp("/");
+      if (!(await FlutterForegroundTask.isAppOnForeground)) {
+        FlutterForegroundTask.launchApp("/");
+      }
       // _sendPort?.send(WakeOption(duration: _duration, remaining: _seconds));
     }
   }

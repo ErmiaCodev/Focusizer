@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:taskizer/components/appbar/navbar.dart';
+import 'package:taskizer/constants/version.dart';
 import 'package:taskizer/styles/global.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -26,13 +27,15 @@ class AboutPage extends StatelessWidget {
               ),
               const Text("تمر کز  یار",
                   style: titleStyle, textAlign: TextAlign.center),
+              const SizedBox(height: 8),
+              const Text("نسخه ${versionName}"),
               const SizedBox(height: 20),
               const Text(
                 "این برنامه جهت کمک به برنامه ریزی دانش آموزان و زمان بندی بهتر طراحی شده. درکنار تایمر تعدادی امکانات قرار گرفته که با افزایش امتیاز فعال میشود.",
                 style: normTextStyle,
                 textAlign: TextAlign.justify,
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

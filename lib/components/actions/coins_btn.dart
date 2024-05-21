@@ -23,7 +23,7 @@ class CoinsBtn extends StatelessWidget {
             valueListenable: Hive.box(coinsBoxName).listenable(),
             builder: (context, Box box, child) {
               return Padding(
-                  padding: const EdgeInsets.only(top: 5),
+                  padding: const EdgeInsets.only(top: 3.5),
                   child: Text("${box.get('coins') ?? 0}",
                       style: const TextStyle(
                           fontSize: 18,
@@ -37,12 +37,8 @@ class CoinsBtn extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                   shape: BoxShape.circle, color: Colors.amber.shade400),
-              padding: const EdgeInsets.all(2),
-              child: const Icon(
-                Icons.currency_pound,
-                size: 20,
-                color: Colors.black,
-              ),
+              padding: const EdgeInsets.all(8.8),
+              child: const Text('\$', style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold)),
             ),
           ),
         ],

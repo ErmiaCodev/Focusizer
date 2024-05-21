@@ -97,7 +97,7 @@ class ProfilePage extends StatelessWidget {
                             ),
                             const SizedBox(width: 16.0),
                             FloatingActionButton.extended(
-                              onPressed: () => _onLogout(context, ref),
+                              onPressed: () => {},
                               heroTag: 'logout',
                               elevation: 0,
                               backgroundColor: Colors.red.shade300,
@@ -260,11 +260,17 @@ class _TopPortion extends StatelessWidget {
               children: [
                 Container(
                   padding: const EdgeInsets.all(3),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).brightness == Brightness.dark ? Colors.blueGrey.shade900 : Colors.white,
                     shape: BoxShape.circle,
                   ),
-                  child: const Image(image: AssetImage('assets/avatar.png')),
+                  child: Container(
+                    padding: EdgeInsets.zero,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: Image(image: AssetImage('assets/avatar.png')),
+                  ),
                 ),
                 Positioned(
                   bottom: 0,

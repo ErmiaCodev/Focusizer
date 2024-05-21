@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:taskizer/constants/db.dart';
-import 'package:taskizer/models/file.dart';
-import 'package:taskizer/models/music.dart';
-import 'package:taskizer/models/note.dart';
-import 'package:taskizer/models/task.dart';
-import 'package:taskizer/pages/splash/splash.dart';
+import '/constants/db.dart';
+import '/models/file.dart';
+import '/models/music.dart';
+import '/models/note.dart';
+import '/models/task.dart';
+import '/pages/splash/splash.dart';
+import '/pages/timer/notifications/success.dart' as success;
 import '/app.dart';
 import '/store/auth.dart';
 import '/store/theme.dart';
@@ -20,6 +21,8 @@ Future<void> main() async {
   final container = ProviderContainer();
   await container.read(getUserProvider.future);
   await container.read(getThemeProvider.future);
+
+  await success.initializeAwesome();
 
   await Hive.initFlutter();
   Hive.registerAdapter<Task>(TaskAdapter());

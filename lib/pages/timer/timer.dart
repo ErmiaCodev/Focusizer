@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'dart:isolate';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:quickalert/quickalert.dart';
-import 'package:taskizer/components/actions/coins_btn.dart';
-import 'package:taskizer/components/actions/theme_toggle.dart';
-import 'package:taskizer/pages/timer/player/music_player.dart';
+import '/components/actions/coins_btn.dart';
+import '/components/actions/theme_toggle.dart';
+import '/pages/timer/notifications/success.dart' as success;
+import '/pages/timer/player/music_player.dart';
 import '/components/appbar/navbar.dart';
 import '/components/button/circle_btn.dart';
 import '/constants/db.dart';
@@ -14,14 +14,12 @@ import '/constants/timer.dart';
 import '/models/task.dart';
 import '/pages/timer/infoer/infoer.dart';
 import '/pages/timer/tools/toolbar.dart';
-import '/store/theme.dart';
 import '/styles/global.dart';
 
 import './progress/progress.dart';
 import './selector/selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
-
 import 'service.dart';
 
 class TimerPage extends StatefulWidget {
@@ -71,7 +69,7 @@ class _TimerPageState extends State<TimerPage> {
         channelDescription:
             'This notification appears when the foreground service is running.',
         channelImportance: NotificationChannelImportance.LOW,
-        priority: NotificationPriority.LOW,
+        priority: NotificationPriority.HIGH,
         visibility: NotificationVisibility.VISIBILITY_PUBLIC,
         iconData: const NotificationIconData(
           resType: ResourceType.mipmap,
@@ -211,6 +209,9 @@ class _TimerPageState extends State<TimerPage> {
   }
 
   Future<void> _onFinished() async {
+    await success.showSuccessNotification();
+
+
     await QuickAlert.show(
         context: context,
         type: QuickAlertType.success,
@@ -224,8 +225,14 @@ class _TimerPageState extends State<TimerPage> {
   Future<void> _addCoins() async {
     var box = await Hive.box(coinsBoxName);
     final current = box.get('coins') ?? 0;
-    final newCoins = 5 + (2 * (_duration ~/ 5)) + (_deepFocus.value ? 10 : 0);
-    box.put('coins', current + newCoins);
+
+    if (_deepFocus.value) {
+      final newCoins = 4 + (6 * (_duration ~/ 5));
+      box.put('coins', current + newCoins);
+    } else {
+      final newCoins = 4 + (2 * (_duration ~/ 5));
+      box.put('coins', current + newCoins);
+    }
   }
 
   Future<void> _decCoins() async {
@@ -294,7 +301,7 @@ class _TimerPageState extends State<TimerPage> {
         bgColor: Colors.amber.shade300,
         color: Colors.grey.shade600,
         callback: () => _onCanceled(context),
-        icon: Icons.pause,
+        icon: Icons.stop,
       );
     }
 
@@ -303,7 +310,7 @@ class _TimerPageState extends State<TimerPage> {
         bgColor: Colors.red.shade300,
         color: Colors.white,
         callback: () => _onCanceled(context),
-        icon: Icons.pause,
+        icon: Icons.stop,
       );
     }
 
