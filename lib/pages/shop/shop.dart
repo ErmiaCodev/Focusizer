@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taskizer/components/appbar/navbar.dart';
-import 'package:taskizer/components/coins_bar/coins_btn.dart';
+import 'package:taskizer/components/actions/coins_btn.dart';
 import 'package:taskizer/styles/global.dart';
 
 class ShopPage extends StatefulWidget {

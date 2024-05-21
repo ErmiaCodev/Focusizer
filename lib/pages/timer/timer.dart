@@ -4,6 +4,8 @@ import 'dart:isolate';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:taskizer/components/actions/coins_btn.dart';
+import 'package:taskizer/components/actions/theme_toggle.dart';
 import 'package:taskizer/pages/timer/player/music_player.dart';
 import '/components/appbar/navbar.dart';
 import '/components/button/circle_btn.dart';
@@ -38,6 +40,7 @@ class _TimerPageState extends State<TimerPage> {
   ReceivePort? _receivePort;
   String _title = "";
   String? _topic;
+  ValueNotifier<bool> _deepFocus = ValueNotifier(false);
 
   Future<void> _requestPermissionForAndroid() async {
     if (!Platform.isAndroid) {
@@ -106,8 +109,9 @@ class _TimerPageState extends State<TimerPage> {
       _isRunning = true;
     });
     // You can save data using the saveData function.
+    await FlutterForegroundTask.saveData(key: 'duration', value: "$_duration");
     await FlutterForegroundTask.saveData(
-        key: 'duration', value: "${_duration}");
+        key: 'deepFocus', value: _deepFocus.value.toString());
 
     // Register the receivePort before starting the service.
     final ReceivePort? receivePort = FlutterForegroundTask.receivePort;
@@ -193,7 +197,6 @@ class _TimerPageState extends State<TimerPage> {
       await _requestPermissionForAndroid();
       _initForegroundTask();
 
-      // You can get the previous ReceivePort without restarting the service.
       if (await FlutterForegroundTask.isRunningService) {
         final newReceivePort = FlutterForegroundTask.receivePort;
         _registerReceivePort(newReceivePort);
@@ -212,7 +215,7 @@ class _TimerPageState extends State<TimerPage> {
         context: context,
         type: QuickAlertType.success,
         title: "تبریک",
-        text: 'شما یک پروسه رو با موفقیت به تمام رساندید!!',
+        text: 'شما یک پروسه رو با موفقیت به اتمام رساندید!!',
         confirmBtnText: "تایید",
         confirmBtnColor: Colors.green.shade300);
     _saveTask();
@@ -221,12 +224,12 @@ class _TimerPageState extends State<TimerPage> {
   Future<void> _addCoins() async {
     var box = await Hive.box(coinsBoxName);
     final current = box.get('coins') ?? 0;
-    final newCoins = 5 + (1 * (_duration ~/ 5));
+    final newCoins = 5 + (2 * (_duration ~/ 5)) + (_deepFocus.value ? 10 : 0);
     box.put('coins', current + newCoins);
   }
 
   Future<void> _decCoins() async {
-    var box = await Hive.openBox(coinsBoxName);
+    var box = await Hive.box(coinsBoxName);
     final current = box.get('coins') ?? 0;
     if (current != 0) {
       box.put('coins', current - 1);
@@ -266,8 +269,7 @@ class _TimerPageState extends State<TimerPage> {
       context: context,
       type: QuickAlertType.error,
       title: "اخطار",
-      text:
-          'فقط ${(_remaining! / 60).toInt()} دقیقه مانده, آیا از این کار اطمینان دارید؟',
+      text: 'با این کار 1 سکه از دست خواهید داد!',
       confirmBtnText: "توقف",
       confirmBtnColor: Colors.red.shade300,
       onConfirmBtnTap: () {
@@ -322,6 +324,94 @@ class _TimerPageState extends State<TimerPage> {
     );
   }
 
+  Future<void> showSettingsPanelModal() async {
+    if (_isRunning) {
+      return;
+    }
+
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              title: const Text("تنظیمات پروسه",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              content: ValueListenableBuilder<bool>(
+                valueListenable: _deepFocus,
+                builder: (context, currentState, child) {
+                  return Container(
+                    height: 200,
+                    child: Column(children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Icon(Icons.local_fire_department),
+                                    SizedBox(width: 4),
+                                    Text("تمرکز عمیق",
+                                        style:
+                                            titleStyle.copyWith(fontSize: 18),
+                                        textAlign: TextAlign.end),
+                                  ]),
+                              Text("+ 10 سکه هدیه",
+                                  style: labelStyle.copyWith(fontSize: 12),
+                                  textAlign: TextAlign.end),
+                            ],
+                          ),
+                          Switch(
+                              activeColor: Colors.green.shade400,
+                              value: currentState,
+                              onChanged: (value) {
+                                setState(() {
+                                  _deepFocus.value = value;
+                                });
+                              })
+                        ],
+                      ),
+                      Divider()
+                    ]),
+                  );
+                },
+              ));
+        });
+  }
+
+  Widget _buildSettingsPanel() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          style: ButtonStyle(
+            padding: MaterialStateProperty.resolveWith((states) =>
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 4)),
+          ),
+          onPressed: () => showSettingsPanelModal(),
+          child: IntrinsicHeight(
+            child: Row(
+              children: <Widget>[
+                ValueListenableBuilder<bool>(
+                  valueListenable: _deepFocus,
+                  builder: (context, value, child) {
+                    return Icon((value == true)
+                        ? Icons.local_fire_department
+                        : Icons.do_not_disturb_on);
+                  },
+                ),
+                const VerticalDivider(thickness: 2),
+                const Icon(Icons.timer),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return WithForegroundTask(
@@ -331,6 +421,7 @@ class _TimerPageState extends State<TimerPage> {
           if (_isRunning) {
             const snackBar = SnackBar(
               content: Text('تمرکزتو بهم نزن!!',
+                  textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               backgroundColor: Colors.teal,
             );
@@ -344,26 +435,16 @@ class _TimerPageState extends State<TimerPage> {
             centerTitle: true,
             flexibleSpace: Container(
               decoration: BoxDecoration(
-                gradient: brandGradient,
+                gradient: Theme.of(context).brightness == Brightness.dark
+                    ? darkGradient
+                    : brandGradient,
               ),
             ),
             foregroundColor: Colors.white,
-            leading: (_isRunning)
-                ? MusicPlayer()
-                : null,
-            actions: [
-              Consumer(
-                builder: (context, ref, child) {
-                  return IconButton(
-                    onPressed: () {
-                      ref.read(toggleThemeProvider);
-                    },
-                    icon: (Theme.of(context).brightness == Brightness.dark)
-                        ? const Icon(Icons.sunny)
-                        : const Icon(Icons.mode_night),
-                  );
-                },
-              )
+            leading: (_isRunning) ? const MusicPlayer() : null,
+            actions: const [
+              CoinsBtn(open: false),
+              ThemeToggler(),
             ],
           ),
           body: Column(
@@ -372,6 +453,8 @@ class _TimerPageState extends State<TimerPage> {
             children: [
               ListBody(
                 children: [
+                  _buildSettingsPanel(),
+                  const SizedBox(height: 20),
                   (!_isRunning)
                       ? TimeSelector(
                           callback: (value) {
@@ -422,7 +505,7 @@ class _TimerPageState extends State<TimerPage> {
                   top: 0,
                   child: _buildCtrl(context),
                 ),
-                ToolBar(),
+                const ToolBar(),
               ],
             ),
           ),

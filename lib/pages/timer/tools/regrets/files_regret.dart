@@ -8,7 +8,7 @@ class FilesRegret extends StatelessWidget {
   void _onClick(BuildContext context) {
     final snackBar = SnackBar(
       content: Text(
-        'برای این قابلی به ${files_required_coins} سکه نیاز دارید',
+        'برای این قابلیت به ${files_required_coins} سکه نیاز دارید',
         textAlign: TextAlign.center,
         style: TextStyle(
             fontSize: 16,

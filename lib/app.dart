@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:taskizer/pages/about/about.dart';
 import 'package:taskizer/pages/files/file_add.dart';
 import 'package:taskizer/pages/files/files_page.dart';
 import 'package:taskizer/pages/musics/file_music.dart';
@@ -58,6 +59,7 @@ class App extends ConsumerWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const HomePage(),
+        '/about': (context) => const AboutPage(),
         '/notes': (context) => const NotesPage(),
         '/notes/add': (context) => AddNote(),
         '/files': (context) => const FilesPage(),

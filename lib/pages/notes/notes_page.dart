@@ -15,7 +15,7 @@ class NotesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Guard(
         child: Scaffold(
-      appBar: Navbar("یاداشت ها"),
+      appBar: const Navbar("یاداشت ها"),
       body: Padding(
         padding: EdgeInsets.all(20),
         child: ValueListenableBuilder(
@@ -24,7 +24,7 @@ class NotesPage extends StatelessWidget {
             if (box.values.isEmpty) {
               return const Center(
                 child: Text(
-                  "!یاداشتی ای وجود ندارد",
+                  "!یاداشتی وجود ندارد",
                   style: titleStyle,
                   textDirection: TextDirection.ltr,
                 ),

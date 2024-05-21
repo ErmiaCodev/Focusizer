@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:taskizer/components/coins_bar/coins_btn.dart';
+import 'package:taskizer/components/actions/coins_btn.dart';
+import 'package:taskizer/components/actions/theme_toggle.dart';
 import 'package:taskizer/constants/db.dart';
 import 'package:taskizer/models/task.dart';
 import '/pages/home/feature.dart';
@@ -33,11 +33,14 @@ class HomePage extends ConsumerWidget {
           centerTitle: true,
           flexibleSpace: Container(
             decoration: BoxDecoration(
-              gradient: brandGradient,
+              gradient: Theme.of(context).brightness == Brightness.dark
+                  ? darkGradient
+                  : brandGradient,
             ),
           ),
           actions: const [
-            CoinsBtn(),
+            CoinsBtn(open: false),
+            ThemeToggler(),
           ],
           foregroundColor: Colors.white,
           leading: IconButton(
@@ -60,7 +63,7 @@ class HomePage extends ConsumerWidget {
                         return ItemCard(
                           color: Colors.teal,
                           title: "تمرکز کنید!",
-                          note: "کل تسک ها:",
+                          note: "کل پروسه ها:",
                           timestamp: "هیچی",
                           onTap: () async {
                             Navigator.of(context).pushNamed('/timer');
@@ -92,7 +95,7 @@ class HomePage extends ConsumerWidget {
                         style: emphesizeStyle,
                       ),
                       const Text(
-                        "خوش آومدی!",
+                        "خوش اومدی!",
                         style: titleStyle,
                       ),
                     ],
@@ -128,7 +131,6 @@ class HomePage extends ConsumerWidget {
                         icon: "assets/storefront.png",
                         link: "/shop",
                       ),
-
                       FeatureBox(
                         title: "موسیقی",
                         icon: "assets/icon/second.png",
@@ -136,16 +138,24 @@ class HomePage extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  // const SizedBox(height: 30),
-                  // const Row(
-                  //   mainAxisAlignment: MainAxisAlignment.start,
-                  //   children: <Widget>[
-                  //     Text(
-                  //       "اخبار ",
-                  //       style: titleStyle,
-                  //     ),
-                  //   ],
-                  // ),
+                  const SizedBox(height: 30),
+                  const Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        const Text(
+                          "درباره برنامه",
+                          style: titleStyle,
+                        ),
+                      ]),
+                  const Row(
+                    children: [
+                      FeatureBox(
+                        title: "درباره برنامه",
+                        icon: "assets/icon/about.png",
+                        link: "/about",
+                      ),
+                    ],
+                  )
                 ]),
               ),
             )

@@ -6,12 +6,16 @@ final brandGradient = LinearGradient(
   end: Alignment.bottomLeft,
 );
 
+final darkGradient = LinearGradient(
+  begin: Alignment.topRight,
+  end: Alignment.bottomLeft,
+  colors: <Color>[Colors.cyan.shade900, Colors.blueGrey.shade700],
+);
 
 const labelStyle = TextStyle(
   fontSize: 14,
   fontWeight: FontWeight.w700,
 );
-
 
 const titleStyle = TextStyle(
   fontSize: 22,
@@ -22,5 +26,4 @@ const titleStyle = TextStyle(
 const normTextStyle = TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.normal,
-  // color: Colors.blueGrey.shade700,
 );

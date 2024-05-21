@@ -7,7 +7,7 @@ class NotesRegret extends StatelessWidget {
 
   void _onClick(BuildContext context) {
     final snackBar = SnackBar(
-      content: Text('برای این قابلی به ${notes_required_coins} سکه نیاز دارید',
+      content: Text('برای این قابلیت به ${notes_required_coins} سکه نیاز دارید',
           textAlign: TextAlign.center,
           style: TextStyle(
               fontSize: 16,

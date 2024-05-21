@@ -14,41 +14,41 @@ class MusicsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Guard(
         child: Scaffold(
-          appBar: Navbar("موسیقی ها"),
-          body: Padding(
-            padding: EdgeInsets.all(20),
-            child: ValueListenableBuilder(
-              valueListenable: Hive.box<Music>(musicsBoxName).listenable(),
-              builder: (context, Box<Music> box, _) {
-                if (box.values.isEmpty) {
-                  return const Center(
-                    child: Text(
-                      "!موسیقی ای وجود ندارد",
-                      style: titleStyle,
-                      textDirection: TextDirection.ltr,
-                    ),
-                  );
-                }
+      appBar: Navbar("موسیقی ها"),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: ValueListenableBuilder(
+          valueListenable: Hive.box<Music>(musicsBoxName).listenable(),
+          builder: (context, Box<Music> box, _) {
+            if (box.values.isEmpty) {
+              return const Center(
+                child: Text(
+                  "!موسیقی وجود ندارد",
+                  style: titleStyle,
+                  textDirection: TextDirection.ltr,
+                ),
+              );
+            }
 
-                return ListView.builder(
-                  itemCount: box.values.length,
-                  itemBuilder: (context, index) {
-                    Music music = box.values.elementAt(index);
-                    return MusicItem(music: music, index: index);
-                  },
-                );
+            return ListView.builder(
+              itemCount: box.values.length,
+              itemBuilder: (context, index) {
+                Music music = box.values.elementAt(index);
+                return MusicItem(music: music, index: index);
               },
-            ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            heroTag: 'notesList',
-            onPressed: () {
-              Navigator.of(context).pushNamed("/musics/add");
-            },
-            child: Icon(Icons.add),
-            backgroundColor: Colors.teal.shade300,
-            foregroundColor: Colors.white,
-          ),
-        ));
+            );
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: 'musicList',
+        onPressed: () {
+          Navigator.of(context).pushNamed("/musics/add");
+        },
+        backgroundColor: Colors.teal.shade300,
+        foregroundColor: Colors.white,
+        child: const Icon(Icons.add),
+      ),
+    ));
   }
 }

@@ -1,17 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:taskizer/constants/db.dart';
 import 'package:taskizer/models/note.dart';
 import 'package:taskizer/pages/notes/note_detail.dart';
-import 'package:taskizer/pages/timer/tools/note_preview.dart';
 import 'package:taskizer/pages/timer/tools/tool_button.dart';
 
 class NotesTool extends StatefulWidget {
-  NotesTool({super.key});
+  const NotesTool({super.key});
 
   @override
-  _NotesToolState createState() => _NotesToolState();
+  State<NotesTool> createState() => _NotesToolState();
 }
 
 class _NotesToolState extends State<NotesTool> {
@@ -23,20 +21,20 @@ class _NotesToolState extends State<NotesTool> {
             // insetPadding: EdgeInsets.zero,
             // clipBehavior: Clip.antiAliasWithSaveLayer,
             // clipBehavior: Clip.antiAlias,
-          insetPadding: EdgeInsets.zero,
+            insetPadding: EdgeInsets.zero,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("یاداشت ها"),
+                const Text("یاداشت ها"),
                 FloatingActionButton.small(
                   backgroundColor: Colors.teal.shade300,
                   foregroundColor: Colors.white,
-                  shape: CircleBorder(),
+                  shape: const CircleBorder(),
                   onPressed: () {
                     Navigator.of(context).pushNamed("/notes/add");
                   },
-                  child: Icon(Icons.add),
+                  child: const Icon(Icons.add),
                 )
               ],
             ),
@@ -47,7 +45,7 @@ class _NotesToolState extends State<NotesTool> {
                 valueListenable: Hive.box<Note>(notesBoxName).listenable(),
                 builder: (context, Box<Note> box, child) {
                   if (box.values.isEmpty) {
-                    return Text("یاداشتی وجود ندارد");
+                    return const Text("یاداشتی وجود ندارد");
                   }
 
                   return SingleChildScrollView(

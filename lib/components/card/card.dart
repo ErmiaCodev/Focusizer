@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taskizer/styles/global.dart';
 
 const cardTitle = TextStyle(
   color: Colors.white,
@@ -8,11 +9,10 @@ const cardTitle = TextStyle(
 );
 
 const cardText = TextStyle(
-  color: Colors.white,
-  fontSize: 17,
-  fontWeight: FontWeight.bold,
-  fontFamily: 'Bach'
-);
+    color: Colors.white,
+    fontSize: 17,
+    fontWeight: FontWeight.bold,
+    fontFamily: 'Bach');
 
 class ItemCard extends StatelessWidget {
   const ItemCard({
@@ -42,23 +42,13 @@ class ItemCard extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: Colors.white,
-            gradient: LinearGradient(
-              colors: <Color>[
-                Colors.teal.shade500,
-                Colors.cyan.shade600
-              ],
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-            ),
+            gradient: Theme.of(context).brightness == Brightness.dark
+                ? darkGradient
+                : brandGradient,
             borderRadius: BorderRadius.circular(30),
           ),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            // const SizedBox(height: 10),
-            // Text(
-            //   subTitle,
-            //   style: cardText,
-            // ),
             const SizedBox(height: 10),
             Text(
               title,
