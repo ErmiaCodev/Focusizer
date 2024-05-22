@@ -18,16 +18,18 @@ class TaskAdapter extends TypeAdapter<Task> {
     };
     return Task(
       name: fields[0] as String,
-      date: fields[3] as DateTime,
+      date: fields[5] as DateTime,
       duration: fields[2] as int,
       topic: fields[1] as String?,
+      deepFocus: fields[3] as bool,
+      coins: fields[4] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Task obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -35,6 +37,10 @@ class TaskAdapter extends TypeAdapter<Task> {
       ..writeByte(2)
       ..write(obj.duration)
       ..writeByte(3)
+      ..write(obj.deepFocus)
+      ..writeByte(4)
+      ..write(obj.coins)
+      ..writeByte(5)
       ..write(obj.date);
   }
 

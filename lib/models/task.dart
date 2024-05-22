@@ -14,6 +14,12 @@ class Task extends HiveObject {
   int duration;
 
   @HiveField(3)
+  bool deepFocus;
+
+  @HiveField(4)
+  int coins;
+
+  @HiveField(5)
   DateTime date;
 
   Task({
@@ -21,5 +27,7 @@ class Task extends HiveObject {
     required this.date,
     required this.duration,
     this.topic,
+    this.deepFocus = false,
+    this.coins = 0,
   });
 }

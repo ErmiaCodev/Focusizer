@@ -222,16 +222,18 @@ class _TimerPageState extends State<TimerPage> {
     _saveTask();
   }
 
-  Future<void> _addCoins() async {
+  Future<int> _addCoins() async {
     var box = await Hive.box(coinsBoxName);
     final current = box.get('coins') ?? 0;
 
     if (_deepFocus.value == true) {
       final newCoins = 4 + (4 * (_duration ~/ 5));
       box.put('coins', current + newCoins);
+      return newCoins;
     } else {
       final newCoins = 4 + (3 * (_duration ~/ 5));
       box.put('coins', current + newCoins);
+      return newCoins;
     }
   }
 
@@ -243,14 +245,19 @@ class _TimerPageState extends State<TimerPage> {
     }
   }
 
-  void _saveTask() {
+  Future<void> _saveTask() async {
     Box<Task> tasksBox = Hive.box<Task>(tasksBoxName);
+
+    int rewardCoins = await _addCoins();
+
     tasksBox.add(Task(
         name: (_title == "") ? "پروسه جدید" : _title,
-        topic: _topic,
+        topic: _topic ?? "study",
+        coins: rewardCoins,
+        deepFocus: _deepFocus.value,
         date: DateTime.now().subtract(Duration(minutes: _duration)),
         duration: _duration));
-    _addCoins();
+
 
     if (ModalRoute.of(context)?.settings.name != "/timer") {
       Navigator.popUntil(context, ModalRoute.withName('/timer'));
