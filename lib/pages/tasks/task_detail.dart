@@ -162,6 +162,50 @@ class TaskDetailPage extends StatelessWidget {
                   )
                 ],
               ),
+
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("سکه", style: titleStyle),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(30)),
+                        color: Colors.green.shade100),
+                    child: Text(
+                      "${task.coins}",
+                      style: normTextStyle.copyWith(
+                        color: (Theme.of(context).brightness == Brightness.dark)
+                            ? Colors.green.shade700
+                            : Colors.grey.shade900,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("تمرکز عمیق", style: titleStyle),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(30)),
+                        color: Colors.red.shade100),
+                    child: Text(
+                      "${task.deepFocus ? 'عمیق' : 'عادی'}",
+                      style: normTextStyle.copyWith(
+                        color: (Theme.of(context).brightness == Brightness.dark)
+                            ? Colors.red.shade800
+                            : Colors.grey.shade900,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ],
           ),
         ),
