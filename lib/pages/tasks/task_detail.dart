@@ -162,7 +162,7 @@ class TaskDetailPage extends StatelessWidget {
                   )
                 ],
               ),
-
+              SizedBox(height: 14),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -184,7 +184,7 @@ class TaskDetailPage extends StatelessWidget {
                   )
                 ],
               ),
-
+              SizedBox(height: 14),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
