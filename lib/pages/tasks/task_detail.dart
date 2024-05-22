@@ -196,10 +196,10 @@ class TaskDetailPage extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(30)),
                         color: Colors.red.shade100),
                     child: Text(
-                      "${task.deepFocus ? 'عمیق' : 'عادی'}",
+                      "${task.deepFocus ? 'فعال' : 'خاموش'}",
                       style: normTextStyle.copyWith(
                         color: (Theme.of(context).brightness == Brightness.dark)
-                            ? Colors.red.shade800
+                            ? Colors.red.shade700
                             : Colors.grey.shade900,
                       ),
                     ),
