@@ -226,11 +226,11 @@ class _TimerPageState extends State<TimerPage> {
     var box = await Hive.box(coinsBoxName);
     final current = box.get('coins') ?? 0;
 
-    if (_deepFocus.value) {
-      final newCoins = 4 + (6 * (_duration ~/ 5));
+    if (_deepFocus.value == true) {
+      final newCoins = 4 + (4 * (_duration ~/ 5));
       box.put('coins', current + newCoins);
     } else {
-      final newCoins = 4 + (2 * (_duration ~/ 5));
+      final newCoins = 4 + (3 * (_duration ~/ 5));
       box.put('coins', current + newCoins);
     }
   }
@@ -365,7 +365,7 @@ class _TimerPageState extends State<TimerPage> {
                                             titleStyle.copyWith(fontSize: 18),
                                         textAlign: TextAlign.end),
                                   ]),
-                              Text("+ 10 سکه هدیه",
+                              Text("+ سکه هدیه",
                                   style: labelStyle.copyWith(fontSize: 12),
                                   textAlign: TextAlign.end),
                             ],
