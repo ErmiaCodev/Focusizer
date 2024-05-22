@@ -33,6 +33,7 @@ class _Infoer extends State<Infoer> {
           children: <Widget>[
             TextField(
               autofocus: true,
+              controller: TextEditingController(text: _title),
               decoration: const InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
