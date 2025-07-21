@@ -1,3 +1,4 @@
 # Focusizer
 
-an app helps you focus while let you be free and have access to your stuff and in-app features
+## بومی سازی برنامه فارست به زبان و فرهنگ ایرانی به همراه برخی امکانات
+#### ساخته شده برای جشنواره جوان خوارزمی سال 1403
